@@ -6,13 +6,12 @@ class EmpleadoApi extends Empleado
     ///Logueo de empleados.
     public function LoginEmpleado($request, $response, $args)
     {
-        $parametros = $request->getParsedBody();
-        $usuario = $parametros["usuario"];
-        $clave = $parametros["clave"];
-        $retorno = Empleado::Login($usuario, $clave);
+        $json = $request->getBody();
+        $data = json_decode($json, true);
+        $retorno = Empleado::Login($data["user"], $data["pass"]);
 
         if ($retorno["tipo_empleado"] != "") {
-            $token = Token::CodificarToken($usuario, $retorno["tipo_empleado"], $retorno["ID_Empleado"], $retorno["nombre_empleado"]);
+            $token = Token::CodificarToken($data["user"], $retorno["tipo_empleado"], $retorno["ID_Empleado"], $retorno["nombre_empleado"]);
             Empleado::ActualizarFechaLogin($retorno["ID_Empleado"]);
             $respuesta = array("Estado" => "OK", "Mensaje" => "Logueado exitosamente.", "Token" => $token, "Nombre_Empleado" => $retorno["nombre_empleado"]);
         } else {
