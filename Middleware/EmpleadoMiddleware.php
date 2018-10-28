@@ -2,7 +2,7 @@
     class EmpleadoMiddleware{
         ///Valida el token.
         public static function ValidarToken($request,$response,$next){
-            $token = $request->getHeader("token");
+            $token = $request->getHeader("Authorization");
             $validacionToken = Token::DecodificarToken($token[0]);
             if($validacionToken["Estado"] == "OK"){
                 $request = $request->withAttribute("payload", $validacionToken);
