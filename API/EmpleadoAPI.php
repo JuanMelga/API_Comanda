@@ -39,11 +39,12 @@ class EmpleadoApi extends Empleado
     ///Modifica un empleado
     public function ModificarEmpleado($request, $response, $args)
     {
-        $parametros = $request->getParsedBody();
-        $usuario = $parametros["usuario"];
-        $id = $parametros["id"];
-        $nombre = $parametros["nombre"];
-        $tipo = $parametros["tipo"];
+        $json = $request->getBody();
+        $data = json_decode($json, true);
+        $usuario = $data["usuario"];
+        $id = $data["id"];
+        $nombre = $data["nombre"];
+        $tipo = $data["tipo"];
 
         $respuesta = Empleado::Modificar($id, $usuario, $nombre, $tipo);
         $newResponse = $response->withJson($respuesta, 200);
@@ -79,8 +80,9 @@ class EmpleadoApi extends Empleado
     ///Cambiar contraseña
     public function CambiarClaveEmpleado($request, $response, $args)
     {
-        $parametros = $request->getParsedBody();
-        $clave = $parametros["clave"];
+        $json = $request->getBody();
+        $data = json_decode($json, true);
+        $clave = $data["clave"];
         $payload = $request->getAttribute("payload")["Payload"];
         $id = $payload->id;
         $respuesta = Empleado::CambiarClave($id, $clave);
