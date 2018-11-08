@@ -9,7 +9,7 @@
                 return $next($request,$response);
             }
             else{
-                $newResponse = $response->withJson($validacionToken,200);
+                $newResponse = $response->withJson($validacionToken,401);
                 return $newResponse;
             }
         }
@@ -23,7 +23,7 @@
             }
             else{
                 $respuesta = array("Estado" => "ERROR", "Mensaje" => "No tienes permiso para realizar esta accion (Solo categoria socio).");
-                $newResponse = $response->withJson($respuesta,200);
+                $newResponse = $response->withJson($respuesta,401);
                 return $newResponse;
             }
         }
@@ -37,7 +37,7 @@
             }
             else{
                 $respuesta = array("Estado" => "ERROR", "Mensaje" => "No tienes permiso para realizar esta accion (Solo categoria mozo).");
-                $newResponse = $response->withJson($respuesta,200);
+                $newResponse = $response->withJson($respuesta,401);
                 return $newResponse;
             }
         }
