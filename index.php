@@ -41,6 +41,10 @@ $app->post('/empleados/registrarEmpleado[/]', \EmpleadoAPI::class . ':RegistrarE
 $app->get('/empleados/listar[/]', \EmpleadoAPI::class . ':ListarEmpleados')
 ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
 ->add(\EmpleadoMiddleware::class . ':ValidarToken');   
+$app->get('/empleados/activar/{id}[/]', \EmpleadoAPI::class . ':ActivarEmpleado')
+->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
+->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+->add(\EmpleadoMiddleware::class . ':ValidarToken');  
 $app->delete('/empleados/{id}[/]', \EmpleadoAPI::class . ':BajaEmpleado')
 ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
 ->add(\EmpleadoMiddleware::class . ':ValidarSocio')

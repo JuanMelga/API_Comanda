@@ -77,6 +77,15 @@ class EmpleadoApi extends Empleado
         return $newResponse;
     }
 
+    ///Activa un empleado.
+    public function ActivarEmpleado($request, $response, $args)
+    {
+        $id = $args["id"];
+        $respuesta = Empleado::Activar($id);
+        $newResponse = $response->withJson($respuesta, 200);
+        return $newResponse;
+    }
+
     ///Cambiar contraseña
     public function CambiarClaveEmpleado($request, $response, $args)
     {

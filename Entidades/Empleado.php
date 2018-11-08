@@ -127,6 +127,28 @@ class Empleado
         }
     }
 
+    ///Activar empleados.
+    public static function Activar($id_empleado)
+    {
+        try {
+            $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+
+            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE empleado SET estado = 'A' WHERE ID_Empleado = :id");
+
+            $consulta->bindValue(':id', $id_empleado, PDO::PARAM_INT);
+
+            $consulta->execute();
+
+            $respuesta = array("Estado" => "OK", "Mensaje" => "Empleado activado correctamente.");
+        } catch (Exception $e) {
+            $mensaje = $e->getMessage();
+            $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
+        }
+        finally {
+            return $respuesta;
+        }
+    }
+
     ///Modificación de empleados
     public static function Modificar($id_empleado, $usuario, $nombre, $tipo)
     {
