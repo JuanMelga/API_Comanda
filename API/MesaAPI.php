@@ -31,27 +31,33 @@ class MesaApi extends Mesa{
 
     ///Actualiza la foto de la mesa
     public function ActualizarFotoMesa($request, $response, $args){
-        $json = $request->getBody();
-        $data = json_decode($json, true);
-        $codigoMesa = $data["codigo"];
-        $foto = $data["foto"];
- 
-        //Consigo la extensión de la foto.  
-        $ext = Foto::ObtenerExtension($foto);
-        if($ext != "ERROR"){
-            //Guardo la foto.
-            $nombreFoto = $codigoMesa.$ext;
-            $tipoFoto = $foto["filetype"];
-            $base64 = $foto["value"];
-            $respuesta = Mesa::ActualizarFoto($nombreFoto, $tipoFoto, $base64);
-            $newResponse = $response->withJson($respuesta,200);
-            return $newResponse;
+        try{
+            $json = $request->getBody();
+            $data = json_decode($json, true);
+            $codigoMesa = $data["codigo"];
+            $foto = $data["foto"];
+     
+            //Consigo la extensión de la foto.  
+            $ext = Foto::ObtenerExtension($foto);
+            if($ext != "ERROR"){
+                //Guardo la foto.
+                $nombreFoto = $codigoMesa.$ext;
+                $tipoFoto = $foto["filetype"];
+                $base64 = $foto["value"];
+                $respuesta = Mesa::ActualizarFoto($nombreFoto, $tipoFoto, $base64);
+                $newResponse = $response->withJson($respuesta,200);
+                return $newResponse;
+            }
+            else{
+                $respuesta = "Ocurrio un error.";
+                $newResponse = $response->withJson($respuesta,200);
+                return $newResponse;
+            }  
         }
-        else{
-            $respuesta = "Ocurrio un error.";
-            $newResponse = $response->withJson($respuesta,200);
-            return $newResponse;
-        }        
+        catch(Exception $ex){
+            $newResponse = $response->withJson($ex->getMessage(),200);
+        }
+              
     }
 
     ///Cambio de estado: Con cliente esperando pedido
