@@ -44,7 +44,7 @@ class MesaApi extends Mesa{
                 $nombreFoto = $codigoMesa.$ext;
                 $tipoFoto = $foto["filetype"];
                 $base64 = $foto["value"];
-                $respuesta = Mesa::ActualizarFoto($nombreFoto, $tipoFoto, $base64);
+                $respuesta = Mesa::ActualizarFoto($nombreFoto, $tipoFoto, $base64, $codigoMesa);
                 $newResponse = $response->withJson($respuesta,200);
                 return $newResponse;
             }
