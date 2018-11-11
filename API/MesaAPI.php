@@ -37,7 +37,7 @@ class MesaApi extends Mesa{
         $foto = $data["foto"];
  
         //Consigo la extensión de la foto.  
-        $ext = Foto::ObtenerExtension($foto);
+        //$ext = Foto::ObtenerExtension($foto);
         if($ext != "ERROR"){
             //Guardo la foto.
             $rutaFoto = "./Fotos/Mesas/".$codigoMesa.".".$ext;
