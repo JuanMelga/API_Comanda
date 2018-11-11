@@ -12,7 +12,10 @@
                     $retorno = ".jpg";
                     break;
                 case "image/png":
-                    $retorno = ".jpg";
+                    $retorno = ".png";
+                    break;
+                case "image/gif":
+                    $retorno = ".gif";
                     break;
                 default:
                     $retorno = "ERROR";

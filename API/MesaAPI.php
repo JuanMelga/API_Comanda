@@ -5,8 +5,9 @@ include_once("Entidades/Foto.php");
 class MesaApi extends Mesa{  
     ///Registro de nuevos empleados.
     public function RegistrarMesa($request, $response, $args){
-        $parametros = $request->getParsedBody();
-        $codigo = $parametros["codigo"];            
+        $json = $request->getBody();
+        $data = json_decode($json, true);
+        $codigo = $data["codigo"];            
 
         $respuesta = Mesa::Registrar($codigo);
         $newResponse = $response->withJson($respuesta,200);
@@ -30,9 +31,9 @@ class MesaApi extends Mesa{
 
     ///Actualiza la foto de la mesa
     public function ActualizarFotoMesa($request, $response, $args){
-        $parametros = $request->getParsedBody();
-        $files = $request->getUploadedFiles();
-        $codigoMesa = $parametros["codigo"];
+        $json = $request->getBody();
+        $data = json_decode($json, true);
+        $codigoMesa = $data["codigo"];
         $foto = $files["foto"];
  
         //Consigo la extensión de la foto.  
