@@ -34,7 +34,7 @@ class MesaApi extends Mesa{
         $json = $request->getBody();
         $data = json_decode($json, true);
         $codigoMesa = $data["codigo"];
-        $foto = $files["foto"];
+        $foto = $data["foto"];
  
         //Consigo la extensión de la foto.  
         $ext = Foto::ObtenerExtension($foto);
