@@ -38,20 +38,20 @@ class MesaApi extends Mesa{
  
         //Consigo la extensión de la foto.  
         //$ext = Foto::ObtenerExtension($foto);
-        if($ext != "ERROR"){
+        //if($ext != "ERROR"){
             //Guardo la foto.
-            $rutaFoto = "./Fotos/Mesas/".$codigoMesa.".".$ext;
+            $rutaFoto = "./Fotos/Mesas/".$codigoMesa.".jpg";
             //Foto::GuardarFoto($foto,$rutaFoto);
 
             $respuesta = Mesa::ActualizarFoto($rutaFoto,$codigoMesa);
             $newResponse = $response->withJson($respuesta,200);
             return $newResponse;
-        }
-        else{
-            $respuesta = "Ocurrio un error.";
-            $newResponse = $response->withJson($respuesta,200);
-            return $newResponse;
-        }        
+        //}
+        // else{
+        //     $respuesta = "Ocurrio un error.";
+        //     $newResponse = $response->withJson($respuesta,200);
+        //     return $newResponse;
+        // }        
     }
 
     ///Cambio de estado: Con cliente esperando pedido
