@@ -5,7 +5,7 @@
         }
 
         public static function ObtenerExtension($foto){
-            $mediaType = $foto->getClientMediaType();
+            $mediaType = $foto["filetype"];
             $retorno = "";
             switch($mediaType){
                 case "image/jpeg":

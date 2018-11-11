@@ -94,15 +94,18 @@ class Mesa
     }
 
     ///Actualizar la foto de la mesa.
-    public static function ActualizarFoto($rutaFoto, $codigoMesa)
+    public static function ActualizarFoto($nombreFoto, $tipoFoto, $foto, $codigoMesa)
     {
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE mesa SET foto = :rutaFoto WHERE codigo_mesa = :codigo");
+            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE mesa SET foto = :foto, tipoFoto = :tipoFoto, nombreFoto = :nombreFoto
+                                                             WHERE codigo_mesa = :codigo");
 
             $consulta->bindValue(':codigo', $codigoMesa, PDO::PARAM_STR);
-            $consulta->bindValue(':rutaFoto', $rutaFoto, PDO::PARAM_STR);
+            $consulta->bindValue(':nombreFoto', $nombreFoto, PDO::PARAM_STR);
+            $consulta->bindValue(':tipoFoto', $tipoFoto, PDO::PARAM_STR);
+            $consulta->bindValue(':foto', $foto, PDO::PARAM_LOB);
 
             $consulta->execute();
 
