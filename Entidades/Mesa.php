@@ -4,6 +4,8 @@ class Mesa
 {
     public $codigo;
     public $estado;
+    public $nombreFoto;
+    public $tipoFoto;
     public $foto;
 
     ///Registra una nueva mesa
@@ -35,7 +37,7 @@ class Mesa
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT codigo_mesa as codigo, estado, foto FROM mesa");
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT codigo_mesa as codigo, estado, nombreFoto, tipoFoto, foto FROM mesa");
 
             $consulta->execute();
 
