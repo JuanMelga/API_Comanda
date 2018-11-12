@@ -2,15 +2,6 @@
 include_once("DB/AccesoDatos.php");
 class Captcha
 {
-    public $id;
-    public $nombre;
-    public $tipo;
-    public $usuario;
-    public $fechaRegistro;
-    public $ultimoLogin;
-    public $estado;
-    public $cantidad_operaciones;
-
     function getGUID(){
         if (function_exists('com_create_guid')){
             return com_create_guid();
@@ -79,7 +70,7 @@ class Captcha
         try {
             $key = getGUID();
             $color = getColor(); 
-            $foto = getFoto();
+            $foto = getFoto($color);
             date_default_timezone_set("America/Argentina/Buenos_Aires");
             $fecha = date('Y-m-d H:i:s');
 
