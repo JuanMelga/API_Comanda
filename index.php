@@ -9,6 +9,7 @@ include_once './API/MenuAPI.php';
 include_once './API/PedidoAPI.php';
 include_once './API/FacturaAPI.php';
 include_once './API/EncuestaAPI.php';
+include_once './API/CaptchaAPI.php';
 include_once './Middleware/EmpleadoMiddleware.php';
 include_once './Middleware/PedidoMiddleware.php';
 include_once './Middleware/EncuestaMiddleware.php';
