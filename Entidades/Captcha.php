@@ -63,7 +63,7 @@ class Captcha
     }
 
     ///Genera un desafío de Captcha
-    public static function Obtener($usuario, $clave, $nombre, $tipo)
+    public static function Obtener()
     {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         $respuesta = "";
