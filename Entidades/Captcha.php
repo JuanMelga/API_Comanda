@@ -2,7 +2,7 @@
 include_once("DB/AccesoDatos.php");
 class Captcha
 {
-    function getGUID(){
+    private static function getGUID(){
         if (function_exists('com_create_guid')){
             return com_create_guid();
         }else{
@@ -20,9 +20,9 @@ class Captcha
         }
     }
 
-    function getColor(){
+    private static function getColor(){
         $retorno = "";
-        $num = rand(1,4);
+        $num = mt_rand(1,4);
         switch($num){
             case 1:
                 $retorno = "Rojo";
@@ -41,7 +41,7 @@ class Captcha
         return $retorno;
     }
 
-    function getFoto($color){
+    private static function getFoto($color){
         $retorno = "";
 
         switch($color){
@@ -68,25 +68,25 @@ class Captcha
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         $respuesta = "";
         try {
-            $key = "";//getGUID();
-            $color = getColor(); 
-            $foto = getFoto($color);
+            $key = Captcha::getGUID();
+            $color = Captcha::getColor(); 
+            $foto = Captcha::getFoto($color);
             date_default_timezone_set("America/Argentina/Buenos_Aires");
             $fecha = date('Y-m-d H:i:s');
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO captcha (key, color, fecha) 
-                                                            VALUES (:key, :color, :fecha);");
+            $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO captcha (clave, color, fecha) 
+                                                            VALUES (:clave, :color, :fecha);");
 
-            $consulta->bindValue(':key', $key, PDO::PARAM_STR);
+            $consulta->bindValue(':clave', $key, PDO::PARAM_STR);
             $consulta->bindValue(':color', $color, PDO::PARAM_STR);
             $consulta->bindValue(':fecha', $fecha, PDO::PARAM_STR);
 
             $consulta->execute();
 
-            $respuesta = array("estado" => "OK", "key" => "$key", "foto" => "$foto");
+            $respuesta = array("estado" => "OK", "key" => "$key", "foto" => "$foto", "color" => "$color");
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
-            $respuesta = array("estado" => "ERROR");
+            $respuesta = array("estado" => "ERROR", "Mensaje" => "$mensaje");
         }
         finally {
             return $respuesta;
@@ -99,17 +99,20 @@ class Captcha
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT Count(*) FROM captcha WHERE key = :key AND color = :color;");
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT Count(*) FROM captcha WHERE clave = :clave AND color = :color;");
 
-            $consulta->bindValue(':key', $key, PDO::PARAM_STR);
+            $consulta->bindValue(':clave', $key, PDO::PARAM_STR);
             $consulta->bindValue(':color', $color, PDO::PARAM_STR);
             $consulta->execute();
-            $resultado = $consulta->fetch();
+            $resultado = $consulta->fetch()[0];
             if($resultado != null && $resultado == 1){
-                $respuesta = array("Estado" => "OK");
+                $respuesta = array("Estado" => "OK", "resultado" => "$resultado");
+                $consulta = $objetoAccesoDato->RetornarConsulta("DELETE FROM captcha WHERE clave = :clave;");
+                $consulta->bindValue(':clave', $key, PDO::PARAM_STR);
+                $consulta->execute();
             }
             else{
-                $respuesta = array("Estado" => "ERROR");
+                $respuesta = array("Estado" => "ERROR", "key" => "$key", "color" => "$color", "resultado" => "$resultado");
             }
 
         } catch (Exception $e) {
