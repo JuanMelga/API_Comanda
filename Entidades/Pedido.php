@@ -251,7 +251,7 @@ class Pedido
                                                             INNER JOIN menu me ON me.id = p.id_menu
                                                             INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector 
                                                             INNER JOIN empleado em ON em.ID_empleado = p.id_mozo
-                                                            WHERE te.descripcion = :sector AND ep.descripcion NOT IN ('Cancelado','Finalizado')");
+                                                            WHERE te.descripcion = :sector AND ep.descripcion NOT IN ('Cancelado','Finalizado','Entregado','Listo para Servir')");
                     $consulta->bindValue(':sector', $sector, PDO::PARAM_STR);
                     break;
             }
