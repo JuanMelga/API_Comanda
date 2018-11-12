@@ -83,7 +83,7 @@ class Captcha
 
             $consulta->execute();
 
-            $respuesta = array("estado" => "OK", "key" => $key, "foto" => $foto);
+            $respuesta = array("estado" => "OK", "key" => "$key", "foto" => "$foto");
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $respuesta = array("estado" => "ERROR");
