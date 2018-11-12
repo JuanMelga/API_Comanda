@@ -68,25 +68,20 @@ class Captcha
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         $respuesta = "";
         try {
-            $key = "asd233"; //getGUID();
-            $color = "rojo";//getColor(); 
+            $key = getGUID();
+            $color = getColor(); 
             $foto = getFoto($color);
             date_default_timezone_set("America/Argentina/Buenos_Aires");
             $fecha = date('Y-m-d H:i:s');
 
-            var_dump($key);
-            var_dump($color);
-            var_dump($foto);
-            var_dump($fecha);
+            // $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO captcha (key, color, fecha) 
+            //                                                 VALUES (:key, :color, :fecha);");
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO captcha (key, color, fecha) 
-                                                            VALUES (:key, :color, :fecha);");
+            // $consulta->bindValue(':key', $key, PDO::PARAM_STR);
+            // $consulta->bindValue(':color', $color, PDO::PARAM_STR);
+            // $consulta->bindValue(':fecha', $fecha, PDO::PARAM_STR);
 
-            $consulta->bindValue(':key', $key, PDO::PARAM_STR);
-            $consulta->bindValue(':color', $color, PDO::PARAM_STR);
-            $consulta->bindValue(':fecha', $fecha, PDO::PARAM_STR);
-
-            $consulta->execute();
+            // $consulta->execute();
 
             $respuesta = array("estado" => "OK", "key" => "$key", "foto" => "$foto");
         } catch (Exception $e) {
