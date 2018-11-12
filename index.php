@@ -221,7 +221,7 @@ $app->post('/facturas/listarEntreFechas[/]', \FacturaAPI::class . ':ListarFactur
 ->add(\EmpleadoMiddleware::class . ':ValidarToken');  
 
 //Captcha
-$app->get('/captcha[/]', \FacturaAPI::class . ':ListarVentasPDF'); 
-$app->post('/captcha[/]', \FacturaAPI::class . ':ListarVentasPDF'); 
+$app->get('/captcha[/]', \CaptchaAPI::class . ':GetCaptcha'); 
+$app->post('/captcha[/]', \CaptchaAPI::class . ':PostCaptcha'); 
 
 $app->run();
