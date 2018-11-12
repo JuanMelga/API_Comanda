@@ -68,8 +68,8 @@ class Captcha
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         $respuesta = "";
         try {
-            $key = getGUID();
-            $color = getColor(); 
+            $key = "";//getGUID();
+            $color = "";//getColor(); 
             $foto = ""; //getFoto($color);
             // date_default_timezone_set("America/Argentina/Buenos_Aires");
             // $fecha = date('Y-m-d H:i:s');
@@ -120,6 +120,5 @@ class Captcha
             return $respuesta;
         }
     }
-
 }
 ?>
