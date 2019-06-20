@@ -17,9 +17,10 @@ class Pedido
     public $hora_entrega_real;
     public $fecha;
     public $importe;
+    public $es_delivery;
 
     ///Registra un nuevo pedido
-    public static function Registrar($id_mesa, $id_menu, $id_mozo, $nombre_cliente)
+    public static function Registrar($id_mesa, $id_menu, $id_mozo, $nombre_cliente, $es_delivery)
     {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         try {
@@ -42,9 +43,9 @@ class Pedido
                 $hora_inicial = date('H:i');
 
                 $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO pedido (codigo, id_estado_pedidos, fecha, hora_inicial, 
-                                                                id_mesa, id_menu, id_mozo, nombre_cliente) 
+                                                                id_mesa, id_menu, id_mozo, nombre_cliente, es_delivery) 
                                                                 VALUES (:codigo, 1, :fecha, :hora_inicial, 
-                                                                :id_mesa, :id_menu, :id_mozo, :nombre_cliente);");
+                                                                :id_mesa, :id_menu, :id_mozo, :nombre_cliente, :es_delivery);");
 
                 $consulta->bindValue(':id_menu', $id_menu, PDO::PARAM_INT);
                 $consulta->bindValue(':id_mozo', $id_mozo, PDO::PARAM_INT);
@@ -53,6 +54,7 @@ class Pedido
                 $consulta->bindValue(':fecha', $fecha, PDO::PARAM_STR);
                 $consulta->bindValue(':hora_inicial', $hora_inicial, PDO::PARAM_STR);
                 $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
+                $consulta->bindValue(':es_delivery', $es_delivery, PDO::PARAM_STR);
                 $consulta->execute();
 
                 $respuesta = array("Estado" => "OK", "Mensaje" => "Pedido registrado correctamente.");
@@ -99,7 +101,7 @@ class Pedido
             $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
                                                         me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                         em.nombre_empleado as nombre_mozo, p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
-                                                        p.hora_entrega_real, p.fecha, me.precio as importe
+                                                        p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
                                                         FROM pedido p
                                                         INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                         INNER JOIN menu me ON me.id = p.id_menu
@@ -127,7 +129,7 @@ class Pedido
             $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
                                                         me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                         em.nombre_empleado as nombre_mozo, p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
-                                                        p.hora_entrega_real, p.fecha, me.precio as importe
+                                                        p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
                                                         FROM pedido p
                                                         INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                         INNER JOIN menu me ON me.id = p.id_menu
@@ -157,7 +159,7 @@ class Pedido
             $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
                                                         me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                         em.nombre_empleado as nombre_mozo, p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
-                                                        p.hora_entrega_real, p.fecha, me.precio as importe
+                                                        p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
                                                         FROM pedido p
                                                         INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                         INNER JOIN menu me ON me.id = p.id_menu
@@ -186,7 +188,7 @@ class Pedido
             $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
                                                         me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                         em.nombre_empleado as nombre_mozo, p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
-                                                        p.hora_entrega_real, p.fecha, me.precio as importe
+                                                        p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
                                                         FROM pedido p
                                                         INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                         INNER JOIN menu me ON me.id = p.id_menu
@@ -218,7 +220,7 @@ class Pedido
                     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
                                                                 me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                                 em.nombre_empleado as nombre_mozo, p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
-                                                                p.hora_entrega_real, p.fecha, me.precio as importe
+                                                                p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
                                                                 FROM pedido p
                                                                 INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                                 INNER JOIN menu me ON me.id = p.id_menu
@@ -231,7 +233,7 @@ class Pedido
                     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
                                                             me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                             em.nombre_empleado as nombre_mozo, p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
-                                                            p.hora_entrega_real, p.fecha, me.precio as importe
+                                                            p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
                                                             FROM pedido p
                                                             INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                             INNER JOIN menu me ON me.id = p.id_menu
@@ -245,7 +247,7 @@ class Pedido
                     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
                                                             me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                             em.nombre_empleado as nombre_mozo, p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
-                                                            p.hora_entrega_real, p.fecha, me.precio as importe
+                                                            p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
                                                             FROM pedido p
                                                             INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                             INNER JOIN menu me ON me.id = p.id_menu
@@ -277,7 +279,7 @@ class Pedido
             $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
                                                         me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                         em.nombre_empleado as nombre_mozo, p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
-                                                        p.hora_entrega_real, p.fecha, me.precio as importe
+                                                        p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
                                                         FROM pedido p
                                                         INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                         INNER JOIN menu me ON me.id = p.id_menu
@@ -490,7 +492,7 @@ class Pedido
             $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
                                                         me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                         em.nombre_empleado as nombre_mozo, p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
-                                                        p.hora_entrega_real, p.fecha, me.precio as importe
+                                                        p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
                                                         FROM pedido p
                                                         INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                         INNER JOIN menu me ON me.id = p.id_menu
