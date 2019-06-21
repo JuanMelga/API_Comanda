@@ -30,7 +30,6 @@ class Pedido
                                                             AND em.estado = 'A' AND te.Descripcion = 'Mozo';");
 
             $consulta->bindValue(':id_menu', $id_menu, PDO::PARAM_INT);
-            $consulta->bindValue(':id_mozo', $id_mozo, PDO::PARAM_INT);
             $consulta->bindValue(':id_mesa', $id_mesa, PDO::PARAM_STR);
             $consulta->execute();
             $validacion = $consulta->fetch();
