@@ -26,8 +26,8 @@ class Pedido
         try {
             $consulta = $objetoAccesoDato->RetornarConsulta("SELECT Count(*) FROM menu m, mesa me, empleado em
                                                             INNER JOIN tipoempleado te ON em.ID_tipo_empleado = te.id_tipo_empleado 
-                                                            WHERE m.id = :id_menu AND em.ID_empleado = :id_mozo
-                                                            AND me.codigo_mesa = :id_mesa AND em.estado = 'A' AND te.Descripcion = 'Mozo';");
+                                                            WHERE m.id = :id_menu AND me.codigo_mesa = :id_mesa 
+                                                            AND em.estado = 'A' AND te.Descripcion = 'Mozo';");
 
             $consulta->bindValue(':id_menu', $id_menu, PDO::PARAM_INT);
             $consulta->bindValue(':id_mozo', $id_mozo, PDO::PARAM_INT);
