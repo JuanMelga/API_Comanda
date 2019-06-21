@@ -80,7 +80,6 @@ $app->post('/mesas/registrar[/]', \MesaAPI::class . ':RegistrarMesa')
 ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
 ->add(\EmpleadoMiddleware::class . ':ValidarToken');   
 $app->get('/mesas/listar[/]', \MesaAPI::class . ':ListarMesas')
-->add(\EmpleadoMiddleware::class . ':ValidarMozo')
 ->add(\EmpleadoMiddleware::class . ':ValidarToken');   
 $app->delete('/mesas/{codigo}[/]', \MesaAPI::class . ':BajaMesa')
 ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
