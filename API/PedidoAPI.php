@@ -1,11 +1,11 @@
 <?php
 include_once("Entidades/Token.php");
 include_once("Entidades/Pedido.php");
-class PedidoApi extends Pedido{  
+class PedidoApi extends Pedido{
     ///Registro de nuevos pedidos.
     public function RegistrarPedido($request, $response, $args){
         $parametros = $request->getParsedBody();
-        $id_mesa = $parametros["id_mesa"];        
+        $id_mesa = $parametros["id_mesa"];
         $id_menu  = $parametros["id_menu"];
         $nombre_cliente = $parametros["cliente"];
         $es_delivery = $parametros["es_delivery"];
@@ -13,7 +13,7 @@ class PedidoApi extends Pedido{
         if ($payload->tipo == 'Mozo') {
             $id_mozo = $payload->id;
         } else {
-            $id_mozo = null;
+            $id_mozo = 72;
         }
 
         $respuesta = Pedido::Registrar($id_mesa,$id_menu,$id_mozo,$nombre_cliente, $es_delivery);
@@ -31,7 +31,7 @@ class PedidoApi extends Pedido{
     ///Lista todos los pedidos por Fecha
     public function ListarTodosLosPedidosPorFecha($request,$response,$args){
         $parametros = $request->getParsedBody();
-        $fecha = $parametros["fecha"];  
+        $fecha = $parametros["fecha"];
         $respuesta = Pedido::ListarTodosPorFecha($fecha);
         $newResponse = $response->withJson($respuesta,200);
         return $newResponse;
@@ -39,7 +39,7 @@ class PedidoApi extends Pedido{
 
     ///Lista todos los pedidos por mesa
     public function ListarTodosLosPedidosPorMesa($request,$response,$args){
-        $mesa = $args["codigoMesa"];  
+        $mesa = $args["codigoMesa"];
         $respuesta = Pedido::ListarPorMesa($mesa);
         $newResponse = $response->withJson($respuesta,200);
         return $newResponse;
@@ -73,8 +73,8 @@ class PedidoApi extends Pedido{
     //Uno de los empleados toma el pedido para prepararlo, agregando un tiempo estimado de preparación.
     public function TomarPedidoPendiente($request,$response,$args){
         $parametros = $request->getParsedBody();
-        $codigo = $parametros["codigo"];  
-        $minutosEstimados = $parametros["minutosEstimados"];  
+        $codigo = $parametros["codigo"];
+        $minutosEstimados = $parametros["minutosEstimados"];
         $payload = $request->getAttribute("payload")["Payload"];
         $id_encargado = $payload->id;
         $respuesta = Pedido::TomarPedido($codigo,$id_encargado,$minutosEstimados);
@@ -85,7 +85,7 @@ class PedidoApi extends Pedido{
     ///Se informa que el pedido está listo para servir.
     public function InformarPedidoListoParaServir($request,$response,$args){
         $parametros = $request->getParsedBody();
-        $codigo = $parametros["codigo"];  
+        $codigo = $parametros["codigo"];
         $respuesta = Pedido::InformarListoParaServir($codigo);
         $newResponse = $response->withJson($respuesta,200);
         return $newResponse;
@@ -102,7 +102,7 @@ class PedidoApi extends Pedido{
     ///Servir Pedido
     public function ServirPedido($request,$response,$args){
         $parametros = $request->getParsedBody();
-        $codigo = $parametros["codigo"];  
+        $codigo = $parametros["codigo"];
         $respuesta = Pedido::Servir($codigo);
         $newResponse = $response->withJson($respuesta,200);
         return $newResponse;
