@@ -121,38 +121,16 @@ class Mesa
         }
     }
 
-    ///Cambio de estado: Con cliente esperando pedido
-    public static function EstadoEsperandoPedido($codigoMesa)
+    ///Para cambiar el estado de la mesa
+    public static function CambiarEstado($codigoMesa, $estado)
     {
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE mesa SET estado = 'Con cliente esperando pedido' WHERE codigo_mesa = :codigo");
+            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE mesa SET estado = :estado WHERE codigo_mesa = :codigo");
 
             $consulta->bindValue(':codigo', $codigoMesa, PDO::PARAM_STR);
-
-            $consulta->execute();
-
-            $resultado = array("Estado" => "OK", "Mensaje" => "Cambio de estado exitoso.");
-        } catch (Exception $e) {
-            $mensaje = $e->getMessage();
-            $resultado = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
-            return $resultado;
-        }
-
-    }
-
-    ///Cambio de estado: Con clientes comiendo
-    public static function EstadoComiendo($codigoMesa)
-    {
-        try {
-            $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
-
-            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE mesa SET estado = 'Con clientes comiendo' WHERE codigo_mesa = :codigo");
-
-            $consulta->bindValue(':codigo', $codigoMesa, PDO::PARAM_STR);
+            $consulta->bindValue(':estado', $estado, PDO::PARAM_STR);
 
             $consulta->execute();
 
@@ -165,51 +143,6 @@ class Mesa
             return $resultado;
         }
     }
-
-    ///Cambio de estado: Con clientes pagando
-    public static function EstadoPagando($codigoMesa)
-    {
-        try {
-            $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
-
-            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE mesa SET estado = 'Con clientes pagando' WHERE codigo_mesa = :codigo");
-
-            $consulta->bindValue(':codigo', $codigoMesa, PDO::PARAM_STR);
-
-            $consulta->execute();
-
-            $resultado = array("Estado" => "OK", "Mensaje" => "Cambio de estado exitoso.");
-        } catch (Exception $e) {
-            $mensaje = $e->getMessage();
-            $resultado = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
-            return $resultado;
-        }
-    }
-
-    ///Cambio de estado: Cerrada
-    public static function EstadoCerrada($codigoMesa)
-    {
-        try {
-            $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
-
-            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE mesa SET estado = 'Cerrada' WHERE codigo_mesa = :codigo");
-
-            $consulta->bindValue(':codigo', $codigoMesa, PDO::PARAM_STR);
-
-            $consulta->execute();
-
-            $resultado = array("Estado" => "OK", "Mensaje" => "Cambio de estado exitoso.");
-        } catch (Exception $e) {
-            $mensaje = $e->getMessage();
-            $resultado = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
-            return $resultado;
-        }
-    }
-
     ///Calcula el importe final y genera la factura. Finaliza todos los pedidos de la mesa. 
     public static function Cobrar($codigoMesa)
     {

@@ -60,34 +60,13 @@ class MesaApi extends Mesa{
               
     }
 
-    ///Cambio de estado: Con cliente esperando pedido
-    public function CambiarEstado_EsperandoPedido($request,$response,$args){
-        $codigo = $args["codigo"];
-        $respuesta = Mesa::EstadoEsperandoPedido($codigo);
-        $newResponse = $response->withJson($respuesta,200);
-        return $newResponse;
-    }
-
-    ///Cambio de estado: Con clientes comiendo
-    public function CambiarEstado_Comiendo($request,$response,$args){
-        $codigo = $args["codigo"];
-        $respuesta = Mesa::EstadoComiendo($codigo);
-        $newResponse = $response->withJson($respuesta,200);
-        return $newResponse;
-    }
-
-    ///Cambio de estado: Con clientes pagando
-    public function CambiarEstado_Pagando($request,$response,$args){
-        $codigo = $args["codigo"];
-        $respuesta = Mesa::EstadoPagando($codigo);
-        $newResponse = $response->withJson($respuesta,200);
-        return $newResponse;
-    }
-
-    ///Cambio de estado: Cerrada
-    public function CambiarEstado_Cerrada($request,$response,$args){
-        $codigo = $args["codigo"];
-        $respuesta = Mesa::EstadoCerrada($codigo);
+    ///Cambio de estado de la mesa
+    public function ModificarEstado($request,$response,$args){
+        $json = $request->getBody();
+        $data = json_decode($json, true);
+        $codigo = $data["codigo"];
+        $estado = $data["estado"];
+        $respuesta = Mesa::CambiarEstado($codigo, $estado);
         $newResponse = $response->withJson($respuesta,200);
         return $newResponse;
     }

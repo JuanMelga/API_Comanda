@@ -89,22 +89,9 @@ $app->post('/mesas/foto[/]', \MesaAPI::class . ':ActualizarFotoMesa')
 ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
 ->add(\EmpleadoMiddleware::class . ':ValidarMozo')
 ->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
-$app->get('/mesas/estadoEsperando/{codigo}[/]', \MesaAPI::class . ':CambiarEstado_EsperandoPedido')
+$app->post('/mesas/cambiarEstado[/]', \MesaAPI::class . ':ModificarEstado')
 ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\EmpleadoMiddleware::class . ':ValidarMozo')
 ->add(\EmpleadoMiddleware::class . ':ValidarToken');
-$app->get('/mesas/estadoComiendo/{codigo}[/]', \MesaAPI::class . ':CambiarEstado_Comiendo')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\EmpleadoMiddleware::class . ':ValidarMozo')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
-$app->get('/mesas/estadoPagando/{codigo}[/]', \MesaAPI::class . ':CambiarEstado_Pagando')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\EmpleadoMiddleware::class . ':ValidarMozo')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
-$app->get('/mesas/estadoCerrada/{codigo}[/]', \MesaAPI::class . ':CambiarEstado_Cerrada')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
 $app->get('/mesas/cobrar/{codigo}[/]', \MesaAPI::class . ':CobrarMesa')
 ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
 ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
