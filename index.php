@@ -125,8 +125,7 @@ $app->post('/mesas/FacturacionEntreFechas[/]', \MesaAPI::class . ':MesaFacturaci
 ->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
 
 //Menu
-$app->post('/menu/registrar[/]', \MenuAPI::class . ':RegistrarComida')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado');
+$app->post('/menu/registrar[/]', \MenuAPI::class . ':RegistrarComida');
 $app->post('/menu/modificar[/]', \MenuAPI::class . ':ModificarComida')
 ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
 ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
