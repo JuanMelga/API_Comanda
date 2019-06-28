@@ -14,9 +14,9 @@ class Menu
     public static function Registrar($nombre, $precio, $id_sector, $descripcion, $tiempo_promedio, $fotos)
     {        
         $respuesta = "";
-        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         try {
-            $objetoAccesoDato->IniciarTrasaccion();
+            $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+            //$objetoAccesoDato->IniciarTrasaccion();
 
             var_dump("llegue");
             $consulta = $objetoAccesoDato->RetornarConsulta("SELECT MAX(id) FROM menu;");
@@ -49,12 +49,12 @@ class Menu
             }
 
             $respuesta = array("Estado" => "OK", "Mensaje" => "Registrado correctamente.");
-            $objetoAccesoDato->Commit();
+            //$objetoAccesoDato->Commit();
         } catch (Exception $e) {
             var_dump($e);
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-            $objetoAccesoDato->Rollback();
+            //$objetoAccesoDato->Rollback();
         }
         finally {
             var_dump($respuesta);
