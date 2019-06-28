@@ -14,7 +14,7 @@ class MenuApi extends Menu{
         $tiempo_promedio = $data["tiempo_promedio"];
         $fotos = $data["fotos"];              
 
-        $respuesta = Menu::Registrar($nombre,$precio,$sector);
+        $respuesta = Menu::Registrar($nombre, $precio, $id_sector, $descripcion, $tiempo_promedio, $fotos);
         $newResponse = $response->withJson($respuesta,200);
         return $newResponse;
     }
