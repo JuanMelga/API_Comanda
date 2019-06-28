@@ -12,10 +12,10 @@ class Menu
 
     ///Registra una nueva comida al menu
     public static function Registrar($nombre, $precio, $id_sector, $descripcion, $tiempo_promedio, $fotos)
-    {
-        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+    {        
         $respuesta = "";
         try {
+            $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
             $objetoAccesoDato->IniciarTrasaccion();
 
             $consulta = $objetoAccesoDato->RetornarConsulta("SELECT MAX(id) FROM menu;");
@@ -45,11 +45,11 @@ class Menu
             }
 
             $respuesta = array("Estado" => "OK", "Mensaje" => "Registrado correctamente.");
-            $objetoAccesoDato->Commit();
+            //$objetoAccesoDato->Commit();
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-            $objetoAccesoDato->Rollback();
+            //$objetoAccesoDato->Rollback();
         }
         finally {
             return $respuesta;
