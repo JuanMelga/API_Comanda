@@ -13,21 +13,23 @@ class Menu
     ///Registra una nueva comida al menu
     public static function Registrar($nombre, $precio, $id_sector, $descripcion, $tiempo_promedio, $fotos)
     {        
-        var_dump("Probando");
         $respuesta = "";
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
             //$objetoAccesoDato->IniciarTrasaccion();
 
+            var_dump("llegue");
             $consulta = $objetoAccesoDato->RetornarConsulta("SELECT MAX(id) FROM menu;");
             $consulta->execute();
             $ult_id = $consulta->fetch();
+            var_dump("ult_id");
+            var_dump($ult_id);
             $id = 0;
             if($ult_id != null)
             {
                 $id = $ult_id + 1;
             }
-
+            var_dump($id);
             $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO menu (id, nombre, precio, id_sector, descripcion, tiempo_promedio) 
                                                                 VALUES (:id, :nombre, :precio, :id_sector, :descripcion, :tiempo_promedio);");
             $consulta->bindValue(':nombre', $nombre, PDO::PARAM_STR);
@@ -38,7 +40,8 @@ class Menu
             $consulta->bindValue(':tiempo_promedio', $tiempo_promedio, PDO::PARAM_INT);
             $consulta->execute();
 
-            foreach ($fotos as $foto) {                
+            foreach ($fotos as $foto) {    
+                var_dump("foto");            
                 $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO fotos_menu (idMenu, base64) VALUES (:idMenu, :base64);");
                 $consulta->bindValue(':idMenu', $id, PDO::PARAM_INT);
                 $consulta->bindValue(':base64', $foto, PDO::PARAM_INT);
@@ -48,11 +51,13 @@ class Menu
             $respuesta = array("Estado" => "OK", "Mensaje" => "Registrado correctamente.");
             //$objetoAccesoDato->Commit();
         } catch (Exception $e) {
+            var_dump($e);
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
             //$objetoAccesoDato->Rollback();
         }
         finally {
+            var_dump($respuesta);
             return $respuesta;
         }
     }
