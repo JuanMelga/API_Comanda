@@ -44,12 +44,12 @@ class Menu
                 $consulta->execute();
             }
 
-            $objetoAccesoDato->Commit();
             $respuesta = array("Estado" => "OK", "Mensaje" => "Registrado correctamente.");
+            $objetoAccesoDato->Commit();
         } catch (Exception $e) {
-            $objetoAccesoDato->Rollback();
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
+            $objetoAccesoDato->Rollback();
         }
         finally {
             return $respuesta;
