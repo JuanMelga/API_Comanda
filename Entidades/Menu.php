@@ -27,7 +27,7 @@ class Menu
             $id = 0;
             if($ult_id != null)
             {
-                $id = $ult_id + 1;
+                $id = $ult_id[0] + 1;
             }
             var_dump($id);
             $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO menu (id, nombre, precio, id_sector, descripcion, tiempo_promedio) 
