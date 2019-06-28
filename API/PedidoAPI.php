@@ -13,7 +13,7 @@ class PedidoApi extends Pedido{
         if ($payload->tipo == 'Mozo') {
             $id_mozo = $payload->id;
         } else {
-            $id_mozo = 72;
+            $id_mozo = NULL;
         }
 
         $respuesta = Pedido::Registrar($id_mesa,$id_menu,$id_mozo,$nombre_cliente, $es_delivery);
