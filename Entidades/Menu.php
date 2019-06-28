@@ -13,6 +13,7 @@ class Menu
     ///Registra una nueva comida al menu
     public static function Registrar($nombre, $precio, $id_sector, $descripcion, $tiempo_promedio, $fotos)
     {        
+        var_dump("Probando");
         $respuesta = "";
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
