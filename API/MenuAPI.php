@@ -5,9 +5,14 @@ class MenuApi extends Menu{
     ///Registro de nuevas comidas
     public function RegistrarComida($request, $response, $args){
         $parametros = $request->getParsedBody();
-        $nombre = $parametros["nombre"];  
-        $precio = $parametros["precio"];  
-        $sector = $parametros["sector"];            
+        $json = $request->getBody();
+        $data = json_decode($json, true);
+        $nombre = $data["nombre"];
+        $descripcion = $data["descripcion"];
+        $precio = $data["precio"];
+        $id_sector = $data["id_sector"];
+        $tiempo_promedio = $data["tiempo_promedio"];
+        $fotos = $data["fotos"];              
 
         $respuesta = Menu::Registrar($nombre,$precio,$sector);
         $newResponse = $response->withJson($respuesta,200);
@@ -17,13 +22,18 @@ class MenuApi extends Menu{
     ///Modificacion del menu
     public function ModificarComida($request, $response, $args){
         $parametros = $request->getParsedBody();
-        $id = $parametros["id"]; 
-        $nombre = $parametros["nombre"];  
-        $precio = $parametros["precio"];  
-        $sector = $parametros["sector"];            
+        $json = $request->getBody();
+        $data = json_decode($json, true);
+        $id = $data["id"];
+        $nombre = $data["nombre"];
+        $descripcion = $data["descripcion"];
+        $precio = $data["precio"];
+        $id_sector = $data["id_sector"];
+        $tiempo_promedio = $data["tiempo_promedio"];        
+        $fotos = $data["fotos"];                      
 
-        $respuesta = Menu::Modificar($id,$nombre,$precio,$sector);
-        $newResponse = $response->withJson($respuesta,200);
+        // $respuesta = Menu::Modificar($id,$nombre,$precio,$sector);
+        $newResponse = $response->withJson("OK",200);
         return $newResponse;
     }
 

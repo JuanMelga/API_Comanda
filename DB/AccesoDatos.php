@@ -38,5 +38,20 @@ class AccesoDatos
     {
         trigger_error('La clonaci&oacute;n de este objeto no est&aacute; permitida!!!', E_USER_ERROR);
     }
+
+    public function IniciarTransaccion()
+    {
+        $this->_objetoPDO->beginTransaction();
+    }
+
+    public function Commit()
+    {
+        $this->_objetoPDO->commit();
+    }
+
+    public function Rollback()
+    {
+        $this->_objetoPDO->rollBack();
+    }
 }
 ?>

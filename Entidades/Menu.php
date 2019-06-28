@@ -6,34 +6,48 @@ class Menu
     public $precio;
     public $nombre;
     public $sector;
+    public $id_sector;
+    public $descripcion;
+    public $tiempo_promedio;
 
     ///Registra una nueva comida al menu
-    public static function Registrar($nombre, $precio, $sector)
+    public static function Registrar($nombre, $precio, $id_sector, $descripcion, $tiempo_promedio, $fotos)
     {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         $respuesta = "";
         try {
-            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT ID_tipo_empleado FROM tipoempleado WHERE Descripcion = :sector AND Estado = 'A';");
+            $objetoAccesoDato->IniciarTrasaccion();
 
-            $consulta->bindValue(':sector', $sector, PDO::PARAM_STR);
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT MAX(id) FROM menu;");
             $consulta->execute();
-            $id_sector = $consulta->fetch();
-
-            if ($id_sector != null) {
-                $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO menu (nombre, precio, id_sector) 
-                                                                VALUES (:nombre, :precio, :id_sector);");
-
-                $consulta->bindValue(':nombre', $nombre, PDO::PARAM_STR);
-                $consulta->bindValue(':precio', $precio, PDO::PARAM_INT);
-                $consulta->bindValue(':id_sector', $id_sector[0], PDO::PARAM_INT);
-
-                $consulta->execute();
-
-                $respuesta = array("Estado" => "OK", "Mensaje" => "Registrado correctamente.");
-            } else {
-                $respuesta = array("Estado" => "ERROR", "Mensaje" => "Debe ingresar un sector valido");
+            $ult_id = $consulta->fetch();
+            $id = 0;
+            if($ult_id != null)
+            {
+                $id = $ult_id + 1;
             }
+
+            $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO menu (id, nombre, precio, id_sector, descripcion, tiempo_promedio) 
+                                                                VALUES (:id, :nombre, :precio, :id_sector, :descripcion, :tiempo_promedio);");
+            $consulta->bindValue(':nombre', $nombre, PDO::PARAM_STR);
+            $consulta->bindValue(':precio', $precio, PDO::PARAM_INT);
+            $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+            $consulta->bindValue(':id_sector', $id_sector, PDO::PARAM_INT);
+            $consulta->bindValue(':descripcion', $descripcion, PDO::PARAM_STR);
+            $consulta->bindValue(':tiempo_promedio', $tiempo_promedio, PDO::PARAM_INT);
+            $consulta->execute();
+
+            foreach ($fotos as $foto) {                
+                $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO fotos_menu (idMenu, base64) VALUES (:idMenu, :base64);");
+                $consulta->bindValue(':idMenu', $id, PDO::PARAM_INT);
+                $consulta->bindValue(':base64', $foto, PDO::PARAM_INT);
+                $consulta->execute();
+            }
+
+            $objetoAccesoDato->Commit();
+            $respuesta = array("Estado" => "OK", "Mensaje" => "Registrado correctamente.");
         } catch (Exception $e) {
+            $objetoAccesoDato->Rollback();
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
         }
@@ -84,7 +98,7 @@ class Menu
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT m.id, m.nombre, m.precio, te.Descripcion as sector FROM menu m INNER JOIN 
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id, m.nombre, m.precio, m.id_sector, te.Descripcion as sector, m.descripcion, m.tiempo_promedio FROM menu m INNER JOIN 
                                                         tipoempleado te ON te.ID_tipo_empleado = m.id_sector;");
 
             $consulta->execute();
@@ -106,6 +120,12 @@ class Menu
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
             $consulta = $objetoAccesoDato->RetornarConsulta("DELETE FROM menu WHERE id = :id");
+
+            $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+
+            $consulta->execute();
+
+            $consulta = $objetoAccesoDato->RetornarConsulta("DELETE FROM fotos_menu WHERE idMenu = :id");
 
             $consulta->bindValue(':id', $id, PDO::PARAM_INT);
 
