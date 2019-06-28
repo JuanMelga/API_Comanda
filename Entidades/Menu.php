@@ -16,7 +16,7 @@ class Menu
         $respuesta = "";
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
-            $objetoAccesoDato->IniciarTrasaccion();
+            //$objetoAccesoDato->IniciarTrasaccion();
 
             $consulta = $objetoAccesoDato->RetornarConsulta("SELECT MAX(id) FROM menu;");
             $consulta->execute();
