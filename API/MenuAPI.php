@@ -3,7 +3,8 @@ include_once("Entidades/Token.php");
 include_once("Entidades/Menu.php");
 class MenuApi extends Menu{  
     ///Registro de nuevas comidas
-    public function RegistrarComida($request, $response, $args) {        
+    public function RegistrarComida($request, $response, $args) {  
+        $respuesta = "";      
         try {
             $parametros = $request->getParsedBody();
             $json = $request->getBody();
