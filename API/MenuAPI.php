@@ -3,20 +3,28 @@ include_once("Entidades/Token.php");
 include_once("Entidades/Menu.php");
 class MenuApi extends Menu{  
     ///Registro de nuevas comidas
-    public function RegistrarComida($request, $response, $args){
-        $parametros = $request->getParsedBody();
-        $json = $request->getBody();
-        $data = json_decode($json, true);
-        $nombre = $data["nombre"];
-        $descripcion = $data["descripcion"];
-        $precio = $data["precio"];
-        $id_sector = $data["id_sector"];
-        $tiempo_promedio = $data["tiempo_promedio"];
-        $fotos = $data["fotos"];              
-
-        $respuesta = Menu::Registrar($nombre, $precio, $id_sector, $descripcion, $tiempo_promedio, $fotos);
-        $newResponse = $response->withJson($respuesta,200);
-        return $newResponse;
+    public function RegistrarComida($request, $response, $args) {        
+        try {
+            $parametros = $request->getParsedBody();
+            $json = $request->getBody();
+            $data = json_decode($json, true);
+            $nombre = $data["nombre"];
+            $descripcion = $data["descripcion"];
+            $precio = $data["precio"];
+            $id_sector = $data["id_sector"];
+            $tiempo_promedio = $data["tiempo_promedio"];
+            $fotos = $data["fotos"];              
+    
+            $respuesta = Menu::Registrar($nombre, $precio, $id_sector, $descripcion, $tiempo_promedio, $fotos);
+        } 
+        catch (Exception $e) {
+            $mensaje = $e->getMessage();
+            $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
+        }
+        finally {
+            $newResponse = $response->withJson($respuesta,200);
+            return $newResponse;
+        }
     }
 
     ///Modificacion del menu
