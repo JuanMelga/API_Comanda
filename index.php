@@ -132,7 +132,7 @@ $app->post('/menu/modificar[/]', \MenuAPI::class . ':ModificarComida')
 ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
 ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
 ->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
-$app->get('/menu/listar[/]', \MenuAPI::class . ':ListarMenu')
+$app->get('/menu/listar[/]', \MenuAPI::class . ':ListarMenu');
 $app->delete('/menu/{id}[/]', \MenuAPI::class . ':BajaMenu')
 ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
 ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
