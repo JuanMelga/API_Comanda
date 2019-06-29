@@ -21,7 +21,7 @@ class PedidoApi extends Pedido{
                 $id_mozo = NULL;
             }
         }
-        catch{
+        catch (Exception $e){
             $id_mozo = null
         }
         
