@@ -12,25 +12,21 @@ class Menu
 
     ///Registra una nueva comida al menu
     public static function Registrar($nombre, $precio, $id_sector, $descripcion, $tiempo_promedio, $fotos)
-    {        
+    {
         $respuesta = "";
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
             //$objetoAccesoDato->IniciarTrasaccion();
 
-            var_dump("llegue");
             $consulta = $objetoAccesoDato->RetornarConsulta("SELECT MAX(id) FROM menu;");
             $consulta->execute();
             $ult_id = $consulta->fetch();
-            var_dump("ult_id");
-            var_dump($ult_id);
             $id = 0;
             if($ult_id != null)
             {
                 $id = $ult_id[0] + 1;
             }
-            var_dump($id);
-            $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO menu (id, nombre, precio, id_sector, descripcion, tiempo_promedio) 
+            $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO menu (id, nombre, precio, id_sector, descripcion, tiempo_promedio)
                                                                 VALUES (:id, :nombre, :precio, :id_sector, :descripcion, :tiempo_promedio);");
             $consulta->bindValue(':nombre', $nombre, PDO::PARAM_STR);
             $consulta->bindValue(':precio', $precio, PDO::PARAM_INT);
@@ -40,8 +36,7 @@ class Menu
             $consulta->bindValue(':tiempo_promedio', $tiempo_promedio, PDO::PARAM_INT);
             $consulta->execute();
 
-            foreach ($fotos as $foto) {    
-                var_dump("foto");            
+            foreach ($fotos as $foto) {
                 $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO fotos_menu (idMenu, base64) VALUES (:idMenu, :base64);");
                 $consulta->bindValue(':idMenu', $id, PDO::PARAM_INT);
                 $consulta->bindValue(':base64', $foto, PDO::PARAM_INT);
@@ -51,13 +46,11 @@ class Menu
             $respuesta = array("Estado" => "OK", "Mensaje" => "Registrado correctamente.");
             //$objetoAccesoDato->Commit();
         } catch (Exception $e) {
-            var_dump($e);
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
             //$objetoAccesoDato->Rollback();
         }
         finally {
-            var_dump($respuesta);
             return $respuesta;
         }
     }
@@ -97,14 +90,14 @@ class Menu
             return $respuesta;
         }
     }
-    
+
     ///Listado completo del menu
     public static function Listar()
     {
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id, m.nombre, m.precio, m.id_sector, te.Descripcion as sector, m.descripcion, m.tiempo_promedio FROM menu m INNER JOIN 
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id, m.nombre, m.precio, m.id_sector, te.Descripcion as sector, m.descripcion, m.tiempo_promedio FROM menu m INNER JOIN
                                                         tipoempleado te ON te.ID_tipo_empleado = m.id_sector;");
 
             $consulta->execute();

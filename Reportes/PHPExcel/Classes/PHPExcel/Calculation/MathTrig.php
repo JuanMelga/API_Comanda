@@ -679,7 +679,7 @@ class PHPExcel_Calculation_MathTrig
 
             return $matrixA->times($matrixB)->getArray();
         } catch (PHPExcel_Exception $ex) {
-            var_dump($ex->getMessage());
+
             return PHPExcel_Calculation_Functions::VALUE();
         }
     }

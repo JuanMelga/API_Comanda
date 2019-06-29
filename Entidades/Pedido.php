@@ -19,7 +19,7 @@ class Pedido
     public $importe;
     public $es_delivery;
     public $direccion_delivery;
-    public $fire_mail_delivery; 
+    public $fire_mail_delivery;
     public $fire_mail_cliente;
 
     ///Registra un nuevo pedido
@@ -30,20 +30,15 @@ class Pedido
         try {
             $codigo = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 0, 5);
 
-            var_dump("Llegué a 2");
             date_default_timezone_set("America/Argentina/Buenos_Aires");
             $fecha = date('Y-m-d');
             $hora_inicial = date('H:i');
 
-            var_dump("Llegué a 3");
-            var_dump($codigo);
-            var_dump($fecha);
-            var_dump($hora_inicial);
-            $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO pedido (codigo, id_estado_pedidos, fecha, hora_inicial, 
-                                                            id_mesa, id_menu, id_mozo, nombre_cliente, es_delivery, direccion_delivery, fire_mail_cliente) 
-                                                            VALUES (:codigo, 1, :fecha, :hora_inicial, 
+            $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO pedido (codigo, id_estado_pedidos, fecha, hora_inicial,
+                                                            id_mesa, id_menu, id_mozo, nombre_cliente, es_delivery, direccion_delivery, fire_mail_cliente)
+                                                            VALUES (:codigo, 1, :fecha, :hora_inicial,
                                                             :id_mesa, :id_menu, :id_mozo, :nombre_cliente, :es_delivery, :direccion_delivery, :fire_mail_cliente);");
-            var_dump($consulta);
+
             $consulta->bindValue(':id_menu', $id_menu, PDO::PARAM_INT);
             $consulta->bindValue(':id_mozo', $id_mozo, PDO::PARAM_INT);
             $consulta->bindValue(':id_mesa', $id_mesa, PDO::PARAM_STR);
@@ -52,17 +47,17 @@ class Pedido
             $consulta->bindValue(':hora_inicial', $hora_inicial, PDO::PARAM_STR);
             $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
             $consulta->bindValue(':es_delivery', $es_delivery, PDO::PARAM_INT);
-            $consulta->bindValue(':direccion_delivery', $direccion_delivery, PDO::PARAM_STR);            
+            $consulta->bindValue(':direccion_delivery', $direccion_delivery, PDO::PARAM_STR);
             $consulta->bindValue(':fire_mail_cliente', $fire_mail_cliente, PDO::PARAM_STR);
             $respuesta = $consulta->execute();
-            var_dump($respuesta);
+
             $respuesta = array("Estado" => "OK", "Mensaje" => "Pedido registrado correctamente.");
         } catch (Exception $e) {
-            var_dump($e);
-            $mensaje = $e->getMessage();            
+
+            $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
         } finally {
-            var_dump($respuesta);
+
             return $respuesta;
         }
     }
@@ -94,7 +89,7 @@ class Pedido
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa,
                                                         me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                         p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
                                                         p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
@@ -120,14 +115,14 @@ class Pedido
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa,
                                                         me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                         p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
                                                         p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
                                                         FROM pedido p
                                                         INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                         INNER JOIN menu me ON me.id = p.id_menu
-                                                        INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector 
+                                                        INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector
                                                         WHERE p.codigo = :codigo");
 
             $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
@@ -148,14 +143,14 @@ class Pedido
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa,
                                                         me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                         em.nombre_empleado as nombre_mozo, p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
                                                         p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
                                                         FROM pedido p
                                                         INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                         INNER JOIN menu me ON me.id = p.id_menu
-                                                        INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector 
+                                                        INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector
                                                         INNER JOIN empleado em ON em.ID_empleado = p.id_mozo
                                                         WHERE p.fecha = :fecha");
             $consulta->bindValue(':fecha', $fecha, PDO::PARAM_STR);
@@ -170,20 +165,20 @@ class Pedido
         }
     }
 
-    ///Listado de pedidos por mesa. No muestra cancelados ni finalizados.  
+    ///Listado de pedidos por mesa. No muestra cancelados ni finalizados.
     public static function ListarPorMesa($mesa)
     {
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa,
                                                         me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                         em.nombre_empleado as nombre_mozo, p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
                                                         p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
                                                         FROM pedido p
                                                         INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                         INNER JOIN menu me ON me.id = p.id_menu
-                                                        INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector 
+                                                        INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector
                                                         INNER JOIN empleado em ON em.ID_empleado = p.id_mozo
                                                         WHERE p.id_mesa = :mesa AND ep.descripcion NOT IN ('Cancelado','Finalizado')");
             $consulta->bindValue(':mesa', $mesa, PDO::PARAM_STR);
@@ -207,41 +202,41 @@ class Pedido
             switch ($sector) {
                     //Si es socio los lista a todos.
                 case "Socio":
-                    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
+                    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa,
                                                                 me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                                 em.nombre_empleado as nombre_mozo, p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
                                                                 p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
                                                                 FROM pedido p
                                                                 INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                                 INNER JOIN menu me ON me.id = p.id_menu
-                                                                INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector 
+                                                                INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector
                                                                 INNER JOIN empleado em ON em.ID_empleado = p.id_mozo
                                                                 WHERE ep.descripcion NOT IN ('Cancelado','Finalizado')");
                     break;
                     //Si es mozo lista los de ese mozo.
                 case "Mozo":
-                    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
+                    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa,
                                                             me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                             em.nombre_empleado as nombre_mozo, p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
                                                             p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
                                                             FROM pedido p
                                                             INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                             INNER JOIN menu me ON me.id = p.id_menu
-                                                            INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector 
+                                                            INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector
                                                             INNER JOIN empleado em ON em.ID_empleado = p.id_mozo
                                                             WHERE p.id_mozo = :id_mozo AND ep.descripcion NOT IN ('Cancelado','Finalizado')");
                     $consulta->bindValue(':id_mozo', $id_empleado, PDO::PARAM_STR);
                     break;
                     //Para los demás lista por sector.
                 default:
-                    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
+                    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa,
                                                             me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                             em.nombre_empleado as nombre_mozo, p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
                                                             p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
                                                             FROM pedido p
                                                             INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                             INNER JOIN menu me ON me.id = p.id_menu
-                                                            INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector 
+                                                            INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector
                                                             INNER JOIN empleado em ON em.ID_empleado = p.id_mozo
                                                             WHERE te.descripcion = :sector AND ep.descripcion NOT IN ('Cancelado','Finalizado','Entregado','Listo para Servir')");
                     $consulta->bindValue(':sector', $sector, PDO::PARAM_STR);
@@ -265,14 +260,14 @@ class Pedido
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa,
                                                         me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                         em.nombre_empleado as nombre_mozo, p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
                                                         p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
                                                         FROM pedido p
                                                         INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                         INNER JOIN menu me ON me.id = p.id_menu
-                                                        INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector 
+                                                        INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector
                                                         INNER JOIN empleado em ON em.ID_empleado = p.id_mozo
                                                         WHERE ep.descripcion = 'Cancelado'");
             $consulta->execute();
@@ -286,7 +281,7 @@ class Pedido
         }
     }
 
-    ///Uno de los empleados toma el pedido para prepararlo, agregando un tiempo estimado de preparación. 
+    ///Uno de los empleados toma el pedido para prepararlo, agregando un tiempo estimado de preparación.
     public static function TomarPedido($codigo, $id_encargado, $minutosEstimadosDePreparacion)
     {
         try {
@@ -297,7 +292,7 @@ class Pedido
 
             $hora_entrega_estimada = $time->format('H:i');
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido SET id_estado_pedidos = 2, id_encargado = :id_encargado, 
+            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido SET id_estado_pedidos = 2, id_encargado = :id_encargado,
                                                             hora_entrega_estimada = :hora_entrega_estimada WHERE codigo = :codigo");
 
             $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
@@ -325,8 +320,8 @@ class Pedido
             $hora_entrega_real = $time->format('H:i');
 
             if ($estado == "Listo para Servir") {
-                $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido 
-                                                                 SET id_estado_pedidos = 3, hora_entrega_real = :hora_entrega_real 
+                $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido
+                                                                 SET id_estado_pedidos = 3, hora_entrega_real = :hora_entrega_real
                                                                  WHERE codigo = :codigo");
 
                 $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
@@ -342,7 +337,7 @@ class Pedido
                     $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
                     $consulta->bindValue(':estado', $resultado, PDO::PARAM_STR);
                 } else {
-                    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido 
+                    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido
                                                                      SET id_estado_pedidos = :estado,
                                                                      id_mozo = :mozo
                                                                      WHERE codigo = :codigo");
@@ -368,7 +363,7 @@ class Pedido
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido SET id_estado_pedidos = 4 
+            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido SET id_estado_pedidos = 4
                                                             WHERE codigo = :codigo");
 
             $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
@@ -384,7 +379,7 @@ class Pedido
         }
     }
 
-    ///Devuelve el tiempo restante 
+    ///Devuelve el tiempo restante
     public static function TiempoRestante($codigo)
     {
         try {
@@ -424,7 +419,7 @@ class Pedido
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido SET id_estado_pedidos = 6 
+            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido SET id_estado_pedidos = 6
                                                             WHERE id_estado_pedidos <> 5 AND id_mesa = :codigo");
 
             $consulta->bindValue(':codigo', $codigoMesa, PDO::PARAM_STR);
@@ -447,8 +442,8 @@ class Pedido
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
             $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.id_menu, m.nombre, count(p.id_menu) as cantidad_ventas FROM pedido p INNER JOIN menu m
-                                                            on m.id = p.id_menu GROUP BY(id_menu) HAVING count(p.id_menu) = 
-                                                            (SELECT MAX(sel.cantidad_ventas) FROM 
+                                                            on m.id = p.id_menu GROUP BY(id_menu) HAVING count(p.id_menu) =
+                                                            (SELECT MAX(sel.cantidad_ventas) FROM
                                                             (SELECT count(p.id_menu) as cantidad_ventas FROM pedido p GROUP BY(id_menu)) sel);");
 
             $consulta->execute();
@@ -469,8 +464,8 @@ class Pedido
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
             $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.id_menu, m.nombre, count(p.id_menu) as cantidad_ventas FROM pedido p INNER JOIN menu m
-                                                            on m.id = p.id_menu GROUP BY(id_menu) HAVING count(p.id_menu) = 
-                                                            (SELECT MIN(sel.cantidad_ventas) FROM 
+                                                            on m.id = p.id_menu GROUP BY(id_menu) HAVING count(p.id_menu) =
+                                                            (SELECT MIN(sel.cantidad_ventas) FROM
                                                             (SELECT count(p.id_menu) as cantidad_ventas FROM pedido p GROUP BY(id_menu)) sel);");
 
             $consulta->execute();
@@ -490,14 +485,14 @@ class Pedido
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa,
                                                         me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                         em.nombre_empleado as nombre_mozo, p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
                                                         p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
                                                         FROM pedido p
                                                         INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                         INNER JOIN menu me ON me.id = p.id_menu
-                                                        INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector 
+                                                        INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector
                                                         INNER JOIN empleado em ON em.ID_empleado = p.id_mozo
                                                         WHERE p.hora_entrega_estimada < p.hora_entrega_real");
 
@@ -519,7 +514,7 @@ class Pedido
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa,
                                                         me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                         p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
                                                         p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery, p.direccion_delivery,
@@ -527,7 +522,7 @@ class Pedido
                                                         FROM pedido p
                                                         INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                         INNER JOIN menu me ON me.id = p.id_menu
-                                                        INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector 
+                                                        INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector
                                                         WHERE p.nombre_cliente = :nombre_cliente AND p.es_delivery = :es_delivery");
 
             $consulta->bindValue(':nombre_cliente', $nombre_cliente, PDO::PARAM_STR);
@@ -550,7 +545,7 @@ class Pedido
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa,
                                                         me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                         p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
                                                         p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery, p.direccion_delivery,
@@ -558,7 +553,7 @@ class Pedido
                                                         FROM pedido p
                                                         INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                         INNER JOIN menu me ON me.id = p.id_menu
-                                                        INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector 
+                                                        INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector
                                                         WHERE (p.fire_mail_delivery = :fire_mail_delivery OR p.fire_mail_cliente = :fire_mail_delivery2)");
 
             $consulta->bindValue(':fire_mail_delivery', $fire_mail_delivery, PDO::PARAM_STR);

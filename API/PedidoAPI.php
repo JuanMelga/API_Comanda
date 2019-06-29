@@ -3,21 +3,19 @@ include_once("Entidades/Token.php");
 include_once("Entidades/Pedido.php");
 class PedidoApi extends Pedido{
     ///Registro de nuevos pedidos.
-    public function RegistrarPedido($request, $response, $args){ 
-        $respuesta = "";      
+    public function RegistrarPedido($request, $response, $args){
+        $respuesta = "";
         try {
             $parametros = $request->getParsedBody();
 
-            var_dump($parametros);
 
             $id_mesa = $parametros["id_mesa"];
             $id_menu  = $parametros["id_menu"];
             $nombre_cliente = $parametros["cliente"];
             $es_delivery = $parametros["es_delivery"];
-            $direccion_delivery = $parametros["direccion_delivery"];            
+            $direccion_delivery = $parametros["direccion_delivery"];
             $fire_mail_cliente = $parametros["fire_mail_cliente"];
             $id_mozo = $parametros["id_mozo"];
-            var_dump("Llegué a 1");
 
             $respuesta = Pedido::Registrar($id_mesa,$id_menu,$id_mozo,$nombre_cliente, $es_delivery, $direccion_delivery, $fire_mail_cliente);
         }
