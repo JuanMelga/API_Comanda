@@ -50,6 +50,7 @@ class Pedido
 
             $respuesta = array("Estado" => "OK", "Mensaje" => "Pedido registrado correctamente.");
         } catch (Exception $e) {
+            var_dump($e);
             $mensaje = $e->getMessage();            
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
         } finally {
