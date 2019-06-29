@@ -25,41 +25,29 @@ class Pedido
     {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         try {
-            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT Count(*) FROM menu m, mesa me
-                                                            WHERE m.id = :id_menu AND me.codigo_mesa = :id_mesa;");
+            $codigo = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 0, 5);
+
+            date_default_timezone_set("America/Argentina/Buenos_Aires");
+            $fecha = date('Y-m-d');
+            $hora_inicial = date('H:i');
+
+            $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO pedido (codigo, id_estado_pedidos, fecha, hora_inicial, 
+                                                            id_mesa, id_menu, id_mozo, nombre_cliente, es_delivery, direccion_delivery) 
+                                                            VALUES (:codigo, 1, :fecha, :hora_inicial, 
+                                                            :id_mesa, :id_menu, :id_mozo, :nombre_cliente, :es_delivery, :direccion_delivery);");
 
             $consulta->bindValue(':id_menu', $id_menu, PDO::PARAM_INT);
+            $consulta->bindValue(':id_mozo', $id_mozo, PDO::PARAM_INT);
             $consulta->bindValue(':id_mesa', $id_mesa, PDO::PARAM_STR);
+            $consulta->bindValue(':nombre_cliente', $nombre_cliente, PDO::PARAM_STR);
+            $consulta->bindValue(':fecha', $fecha, PDO::PARAM_STR);
+            $consulta->bindValue(':hora_inicial', $hora_inicial, PDO::PARAM_STR);
+            $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
+            $consulta->bindValue(':es_delivery', $es_delivery, PDO::PARAM_INT);
+            $consulta->bindValue(':direccion_delivery', $direccion_delivery, PDO::PARAM_STRING);
             $consulta->execute();
-            $validacion = $consulta->fetch();
 
-            if ($validacion[0] > 0) {
-                $codigo = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 0, 5);
-
-                date_default_timezone_set("America/Argentina/Buenos_Aires");
-                $fecha = date('Y-m-d');
-                $hora_inicial = date('H:i');
-
-                $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO pedido (codigo, id_estado_pedidos, fecha, hora_inicial, 
-                                                                id_mesa, id_menu, id_mozo, nombre_cliente, es_delivery, direccion_delivery) 
-                                                                VALUES (:codigo, 1, :fecha, :hora_inicial, 
-                                                                :id_mesa, :id_menu, :id_mozo, :nombre_cliente, :es_delivery, :direccion_delivery);");
-
-                $consulta->bindValue(':id_menu', $id_menu, PDO::PARAM_INT);
-                $consulta->bindValue(':id_mozo', $id_mozo, PDO::PARAM_INT);
-                $consulta->bindValue(':id_mesa', $id_mesa, PDO::PARAM_STR);
-                $consulta->bindValue(':nombre_cliente', $nombre_cliente, PDO::PARAM_STR);
-                $consulta->bindValue(':fecha', $fecha, PDO::PARAM_STR);
-                $consulta->bindValue(':hora_inicial', $hora_inicial, PDO::PARAM_STR);
-                $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
-                $consulta->bindValue(':es_delivery', $es_delivery, PDO::PARAM_INT);
-                $consulta->bindValue(':direccion_delivery', $direccion_delivery, PDO::PARAM_STRING);
-                $consulta->execute();
-
-                $respuesta = array("Estado" => "OK", "Mensaje" => "Pedido registrado correctamente.");
-            } else {
-                $respuesta = array("Estado" => "ERROR", "Mensaje" => "Alguno de los ID ingresados es inválido.");
-            }
+            $respuesta = array("Estado" => "OK", "Mensaje" => "Pedido registrado correctamente.");
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
