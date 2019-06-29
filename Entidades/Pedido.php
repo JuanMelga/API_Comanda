@@ -317,7 +317,7 @@ class Pedido
     }
 
     ///Se informa que el pedido está listo para servir.
-    public static function InformarCambioEstado($codigo, $estado, $empleado)
+    public static function InformarCambioEstado($codigo, $estado, $id_mozo)
     {
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
@@ -338,7 +338,7 @@ class Pedido
                 $consulta_id_estado->execute();
                 $resultado = $consulta_id_estado->fetch()[0];
 
-                if ($empleado->tipo == "Mozo") {
+                if ($id_mozo == 0) {
                     $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido SET id_estado_pedidos = :estado WHERE codigo = :codigo");
                     $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
                     $consulta->bindValue(':estado', $resultado, PDO::PARAM_STR);
@@ -349,7 +349,7 @@ class Pedido
                                                                      WHERE codigo = :codigo");
                     $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
                     $consulta->bindValue(':estado', $resultado, PDO::PARAM_STR);
-                    $consulta->bindValue(':mozo', $empleado->id, PDO::PARAM_STR);
+                    $consulta->bindValue(':mozo', $id_mozo, PDO::PARAM_STR);
                 }
             }
             $consulta->execute();
