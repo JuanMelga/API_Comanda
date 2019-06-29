@@ -515,6 +515,7 @@ class Pedido
     ///Pedido por cliente.
     public static function ObtenerPedidosCliente($nombre_cliente, $es_delivery)
     {
+        $resultado = "";
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
@@ -545,6 +546,7 @@ class Pedido
     ///Pedido por cliente.
     public static function ObtenerPedidosDelivery($fire_mail_delivery)
     {
+        $resultado = "";
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
@@ -557,9 +559,10 @@ class Pedido
                                                         INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                         INNER JOIN menu me ON me.id = p.id_menu
                                                         INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector 
-                                                        WHERE p.fire_mail_delivery = :fire_mail_delivery OR p.fire_mail_cliente = :fire_mail_delivery");
+                                                        WHERE (p.fire_mail_delivery = :fire_mail_delivery OR p.fire_mail_cliente = :fire_mail_delivery2)");
 
             $consulta->bindValue(':fire_mail_delivery', $fire_mail_delivery, PDO::PARAM_STR);
+            $consulta->bindValue(':fire_mail_delivery2', $fire_mail_delivery, PDO::PARAM_STR);
             $consulta->execute();
 
             $resultado = $consulta->fetchAll(PDO::FETCH_CLASS, "Pedido");
@@ -582,7 +585,7 @@ class Pedido
             $consulta->bindValue(':fire_mail_delivery', $fire_mail_delivery, PDO::PARAM_STR);
             $consulta->execute();
 
-            $resultado = $consulta->fetchAll(PDO::FETCH_CLASS, "Pedido");
+            $resultado = array("Estado" => "OK", "Mensaje" => "Delivery actualizado correctamente.");
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $resultado = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
