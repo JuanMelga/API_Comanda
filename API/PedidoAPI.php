@@ -131,4 +131,14 @@ class PedidoApi extends Pedido{
         $newResponse = $response->withJson($respuesta,200);
         return $newResponse;
     }
+
+    //Lista los pedidos de un cliente
+    public function GetPedidosCliente() {
+        $parametros = $request->getParsedBody();
+        $nombre_cliente = $parametros["nombre_cliente"];
+        $es_delivery = $parametros["es_delivery"];
+        $respuesta = Pedido::ObtenerPedidosCliente($nombre_cliente, $es_delivery);
+        $newResponse = $response->withJson($respuesta,200);
+        return $newResponse;
+    }
 }

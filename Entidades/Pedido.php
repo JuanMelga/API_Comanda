@@ -51,7 +51,7 @@ class Pedido
                 $consulta->bindValue(':fecha', $fecha, PDO::PARAM_STR);
                 $consulta->bindValue(':hora_inicial', $hora_inicial, PDO::PARAM_STR);
                 $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
-                $consulta->bindValue(':es_delivery', $es_delivery, PDO::PARAM_STR);
+                $consulta->bindValue(':es_delivery', $es_delivery, PDO::PARAM_INT);
                 $consulta->execute();
 
                 $respuesta = array("Estado" => "OK", "Mensaje" => "Pedido registrado correctamente.");
@@ -508,6 +508,35 @@ class Pedido
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
         } finally {
             return $respuesta;
+        }
+    }
+
+    ///Pedido por cliente.
+    public static function ObtenerPedidosCliente($nombre_cliente, $es_delivery)
+    {
+        try {
+            $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
+                                                        me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
+                                                        p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
+                                                        p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery
+                                                        FROM pedido p
+                                                        INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
+                                                        INNER JOIN menu me ON me.id = p.id_menu
+                                                        INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector 
+                                                        WHERE p.nombre_cliente = :nombre_cliente AND p.es_delivery = :es_delivery");
+
+            $consulta->bindValue(':nombre_cliente', $nombre_cliente, PDO::PARAM_STR);
+            $consulta->bindValue(':es_delivery', $es_delivery, PDO::PARAM_INT);
+            $consulta->execute();
+
+            $resultado = $consulta->fetchAll(PDO::FETCH_CLASS, "Pedido");
+        } catch (Exception $e) {
+            $mensaje = $e->getMessage();
+            $resultado = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
+        } finally {
+            return $resultado;
         }
     }
 }
