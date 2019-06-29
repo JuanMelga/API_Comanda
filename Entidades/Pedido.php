@@ -23,7 +23,7 @@ class Pedido
     public $fire_mail_cliente;
 
     ///Registra un nuevo pedido
-    public static function Registrar($id_mesa, $id_menu, $id_mozo, $nombre_cliente, $es_delivery, $direccion_delivery)
+    public static function Registrar($id_mesa, $id_menu, $id_mozo, $nombre_cliente, $es_delivery, $direccion_delivery, $fire_mail_cliente)
     {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
         $respuesta = "";
@@ -40,9 +40,9 @@ class Pedido
             var_dump($fecha);
             var_dump($hora_inicial);
             $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO pedido (codigo, id_estado_pedidos, fecha, hora_inicial, 
-                                                            id_mesa, id_menu, id_mozo, nombre_cliente, es_delivery, direccion_delivery) 
+                                                            id_mesa, id_menu, id_mozo, nombre_cliente, es_delivery, direccion_delivery, fire_mail_cliente) 
                                                             VALUES (:codigo, 1, :fecha, :hora_inicial, 
-                                                            :id_mesa, :id_menu, :id_mozo, :nombre_cliente, :es_delivery, :direccion_delivery);");
+                                                            :id_mesa, :id_menu, :id_mozo, :nombre_cliente, :es_delivery, :direccion_delivery, :fire_mail_cliente);");
             var_dump($consulta);
             $consulta->bindValue(':id_menu', $id_menu, PDO::PARAM_INT);
             $consulta->bindValue(':id_mozo', $id_mozo, PDO::PARAM_INT);
@@ -52,7 +52,8 @@ class Pedido
             $consulta->bindValue(':hora_inicial', $hora_inicial, PDO::PARAM_STR);
             $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
             $consulta->bindValue(':es_delivery', $es_delivery, PDO::PARAM_INT);
-            $consulta->bindValue(':direccion_delivery', $direccion_delivery, PDO::PARAM_STR);
+            $consulta->bindValue(':direccion_delivery', $direccion_delivery, PDO::PARAM_STR);            
+            $consulta->bindValue(':fire_mail_cliente', $fire_mail_cliente, PDO::PARAM_STR);
             $respuesta = $consulta->execute();
             var_dump($respuesta);
             $respuesta = array("Estado" => "OK", "Mensaje" => "Pedido registrado correctamente.");
@@ -556,7 +557,7 @@ class Pedido
                                                         INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                         INNER JOIN menu me ON me.id = p.id_menu
                                                         INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector 
-                                                        WHERE p.fire_mail_delivery = :fire_mail_delivery");
+                                                        WHERE p.fire_mail_delivery = :fire_mail_delivery OR p.fire_mail_cliente = :fire_mail_delivery");
 
             $consulta->bindValue(':fire_mail_delivery', $fire_mail_delivery, PDO::PARAM_STR);
             $consulta->execute();
