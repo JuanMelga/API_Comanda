@@ -22,7 +22,7 @@ class PedidoApi extends Pedido{
             }
         }
         catch (Exception $e){
-            $id_mozo = null
+            $id_mozo = null;
         }
         
 
