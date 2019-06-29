@@ -336,19 +336,19 @@ class Pedido
                 $consulta_id_estado = $objetoAccesoDato->RetornarConsulta("SELECT id_estado_pedidos FROM estado_pedidos WHERE descripcion = :estado");
                 $consulta_id_estado->bindValue(':estado', $estado, PDO::PARAM_STR);
                 $consulta_id_estado->execute();
-                $resultado = $consulta_id_estado->fetch()[0];
+                $resultado = $consulta_id_estado->fetch();
 
                 if ($empleado->tipo == "Mozo") {
                     $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido SET id_estado_pedidos = :estado WHERE codigo = :codigo");
                     $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
-                    $consulta->bindValue(':estado', $resultado, PDO::PARAM_STR);
+                    $consulta->bindValue(':estado', $resultado[0], PDO::PARAM_STR);
                 } else {
                     $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido 
                                                                      SET id_estado_pedidos = :estado,
                                                                      id_mozo = :mozo
                                                                      WHERE codigo = :codigo");
                     $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
-                    $consulta->bindValue(':estado', $resultado, PDO::PARAM_STR);
+                    $consulta->bindValue(':estado', $resultado[0], PDO::PARAM_STR);
                     $consulta->bindValue(':mozo', $empleado->ID_empleado, PDO::PARAM_STR);
                 }
             }
