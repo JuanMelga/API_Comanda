@@ -331,7 +331,7 @@ class Pedido
                 $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
                 $consulta->bindValue(':hora_entrega_real', $hora_entrega_real, PDO::PARAM_STR);
             } else {
-                $consulta_id_estado = $objetoAccesoDato->RetornarConsulta("SELECT id FROM estado_pedidos WHERE descripcion = :estado");
+                $consulta_id_estado = $objetoAccesoDato->RetornarConsulta("SELECT id_estado_pedidos FROM estado_pedidos WHERE descripcion = :estado");
                 $consulta_id_estado->bindValue(':estado', $estado, PDO::PARAM_STR);
                 $consulta_id_estado->execute();
                 $resultado = $consulta_id_estado->fetch()[0];
