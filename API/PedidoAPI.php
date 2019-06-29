@@ -10,21 +10,7 @@ class PedidoApi extends Pedido{
         $nombre_cliente = $parametros["cliente"];
         $es_delivery = $parametros["es_delivery"];
         $direccion_delivery = $parametros["direccion_delivery"];
-        
-        $id_mozo = null;
-
-        try {
-            $payload = $request->getAttribute("payload")["Payload"];
-            if ($payload->tipo == 'Mozo') {
-                $id_mozo = $payload->id;
-            } else {
-                $id_mozo = NULL;
-            }
-        }
-        catch (Exception $e){
-            $id_mozo = null;
-        }
-        
+        $id_mozo = $parametros["id_mozo"];
 
         $respuesta = Pedido::Registrar($id_mesa,$id_menu,$id_mozo,$nombre_cliente, $es_delivery, $direccion_delivery);
         $newResponse = $response->withJson($respuesta,200);
