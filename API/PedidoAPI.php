@@ -9,6 +9,7 @@ class PedidoApi extends Pedido{
         $id_menu  = $parametros["id_menu"];
         $nombre_cliente = $parametros["cliente"];
         $es_delivery = $parametros["es_delivery"];
+        $direccion_delivery = $parametros["direccion_delivery"];
         $payload = $request->getAttribute("payload")["Payload"];
         if ($payload->tipo == 'Mozo') {
             $id_mozo = $payload->id;
@@ -16,7 +17,7 @@ class PedidoApi extends Pedido{
             $id_mozo = NULL;
         }
 
-        $respuesta = Pedido::Registrar($id_mesa,$id_menu,$id_mozo,$nombre_cliente, $es_delivery);
+        $respuesta = Pedido::Registrar($id_mesa,$id_menu,$id_mozo,$nombre_cliente, $es_delivery, $direccion_delivery);
         $newResponse = $response->withJson($respuesta,200);
         return $newResponse;
     }
@@ -133,7 +134,7 @@ class PedidoApi extends Pedido{
     }
 
     //Lista los pedidos de un cliente
-    public function GetPedidosCliente() {
+    public function GetPedidosCliente($request,$response,$args) {
         $parametros = $request->getParsedBody();
         $nombre_cliente = $parametros["nombre_cliente"];
         $es_delivery = $parametros["es_delivery"];
