@@ -317,7 +317,7 @@ class Pedido
     }
 
     ///Se informa que el pedido está listo para servir.
-    public static function InformarCambioEstado($codigo, $estado)
+    public static function InformarCambioEstado($codigo, $estado, $empleado)
     {
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
@@ -334,14 +334,23 @@ class Pedido
                 $consulta->bindValue(':hora_entrega_real', $hora_entrega_real, PDO::PARAM_STR);
             } else {
                 $consulta_id_estado = $objetoAccesoDato->RetornarConsulta("SELECT id FROM estado_pedidos WHERE descripcion = :estado");
-
                 $consulta_id_estado->bindValue(':estado', $estado, PDO::PARAM_STR);
                 $consulta_id_estado->execute();
                 $resultado = $consulta_id_estado->fetch()[0];
-                $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido SET id_estado_pedidos = :estado WHERE codigo = :codigo");
 
-                $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
-                $consulta->bindValue(':estado', $resultado, PDO::PARAM_STR);
+                if ($empleado->tipo == "Mozo") {
+                    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido SET id_estado_pedidos = :estado WHERE codigo = :codigo");
+                    $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
+                    $consulta->bindValue(':estado', $resultado, PDO::PARAM_STR);
+                } else {
+                    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido 
+                                                                     SET id_estado_pedidos = :estado,
+                                                                     id_mozo = :mozo
+                                                                     WHERE codigo = :codigo");
+                    $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
+                    $consulta->bindValue(':estado', $resultado, PDO::PARAM_STR);
+                    $consulta->bindValue(':mozo', $empleado->id, PDO::PARAM_STR);
+                }
             }
             $consulta->execute();
 

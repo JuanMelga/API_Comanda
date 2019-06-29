@@ -87,7 +87,9 @@ class PedidoApi extends Pedido{
         $parametros = $request->getParsedBody();
         $codigo = $parametros["codigo"];
         $estado = $parametros["estado"];
-        $respuesta = Pedido::InformarCambioEstado($codigo, $estado);
+        $payload = $request->getAttribute("payload")["Payload"];
+        $empleado = $payload;
+        $respuesta = Pedido::InformarCambioEstado($codigo, $estado, $empleado);
         $newResponse = $response->withJson($respuesta,200);
         return $newResponse;
     }
