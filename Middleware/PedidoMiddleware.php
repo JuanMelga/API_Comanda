@@ -24,12 +24,11 @@ class PedidoMiddleware
         return $newResponse;
     }
 
-    public static function ValidarInformarListoParaServir($request, $response, $next)
+    public static function ValidarInformarCambioEstado($request, $response, $next)
     {
         $parametros = $request->getParsedBody();
         $codigo = $parametros["codigo"];  
         $pedido = Pedido::ObtenerPorCodigo($codigo);
-        $payload = $request->getAttribute("payload")["Payload"];
 
         if ($pedido == null) {
             $retorno = array("Estado" => "ERROR", "Mensaje" => "Codigo incorrecto.");
