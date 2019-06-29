@@ -24,6 +24,7 @@ class Pedido
     public static function Registrar($id_mesa, $id_menu, $id_mozo, $nombre_cliente, $es_delivery, $direccion_delivery)
     {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+        $respuesta = "";
         try {
             $codigo = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 0, 5);
 
