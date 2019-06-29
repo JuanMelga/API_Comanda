@@ -137,8 +137,7 @@ $app->delete('/menu/{id}[/]', \MenuAPI::class . ':BajaMenu')
 ->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
 
 //Pedido
-$app->post('/pedido/registrar[/]', \PedidoAPI::class . ':RegistrarPedido')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+$app->post('/pedido/registrar[/]', \PedidoAPI::class . ':RegistrarPedido');
 $app->delete('/pedido/{codigo}[/]', \PedidoAPI::class . ':CancelarPedido')
 ->add(\EmpleadoMiddleware::class . ':ValidarMozo')
 ->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
