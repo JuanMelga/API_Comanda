@@ -349,7 +349,7 @@ class Pedido
                                                                      WHERE codigo = :codigo");
                     $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
                     $consulta->bindValue(':estado', $resultado, PDO::PARAM_STR);
-                    $consulta->bindValue(':mozo', $empleado->ID_empleado, PDO::PARAM_STR);
+                    $consulta->bindValue(':mozo', $empleado->id, PDO::PARAM_STR);
                 }
             }
             $consulta->execute();
