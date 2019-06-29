@@ -19,10 +19,10 @@ class PedidoApi extends Pedido{
             }
 
             $respuesta = Pedido::Registrar($id_mesa,$id_menu,$id_mozo,$nombre_cliente, $es_delivery, $direccion_delivery);
-            $respuesta = $response->withJson($respuesta,200);
         }
         catch(Exception $ex){
-            $respuesta = $response->withJson($ex->getMessage(),200);
+            $mensaje = $ex->getMessage();
+            $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
         }
         finally {
             $newResponse = $response->withJson($respuesta,200);
