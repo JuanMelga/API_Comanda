@@ -48,8 +48,8 @@ class Pedido
             $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
             $consulta->bindValue(':es_delivery', $es_delivery, PDO::PARAM_INT);
             $consulta->bindValue(':direccion_delivery', $direccion_delivery, PDO::PARAM_STRING);
-            $consulta->execute();
-
+            $respuesta = $consulta->execute();
+            var_dump($respuesta);
             $respuesta = array("Estado" => "OK", "Mensaje" => "Pedido registrado correctamente.");
         } catch (Exception $e) {
             var_dump($e);
