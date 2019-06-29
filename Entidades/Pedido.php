@@ -33,7 +33,7 @@ class Pedido
             $fecha = date('Y-m-d');
             $hora_inicial = date('H:i');
 
-            var_dump("Llegué a 3");
+            var_dump("Llegué a 3" + $codigo + $fecha + $hora_inicial);
             $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO pedido (codigo, id_estado_pedidos, fecha, hora_inicial, 
                                                             id_mesa, id_menu, id_mozo, nombre_cliente, es_delivery, direccion_delivery) 
                                                             VALUES (:codigo, 1, :fecha, :hora_inicial, 
