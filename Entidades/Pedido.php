@@ -28,10 +28,12 @@ class Pedido
         try {
             $codigo = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 0, 5);
 
+            var_dump("Llegué a 2");
             date_default_timezone_set("America/Argentina/Buenos_Aires");
             $fecha = date('Y-m-d');
             $hora_inicial = date('H:i');
 
+            var_dump("Llegué a 3");
             $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO pedido (codigo, id_estado_pedidos, fecha, hora_inicial, 
                                                             id_mesa, id_menu, id_mozo, nombre_cliente, es_delivery, direccion_delivery) 
                                                             VALUES (:codigo, 1, :fecha, :hora_inicial, 

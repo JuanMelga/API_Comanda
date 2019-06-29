@@ -46,12 +46,12 @@ class AccesoDatos
 
     public function Commit()
     {
-        $this->_objetoPDO->commit();
+    //     $this->_objetoPDO->commit();
     }
 
     public function Rollback()
     {
-        $this->_objetoPDO->rollBack();
+    //     $this->_objetoPDO->rollBack();
     }
 }
 ?>
