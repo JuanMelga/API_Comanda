@@ -38,7 +38,7 @@ class Pedido
                                                             id_mesa, id_menu, id_mozo, nombre_cliente, es_delivery, direccion_delivery) 
                                                             VALUES (:codigo, 1, :fecha, :hora_inicial, 
                                                             :id_mesa, :id_menu, :id_mozo, :nombre_cliente, :es_delivery, :direccion_delivery);");
-
+            var_dump($consulta);
             $consulta->bindValue(':id_menu', $id_menu, PDO::PARAM_INT);
             $consulta->bindValue(':id_mozo', $id_mozo, PDO::PARAM_INT);
             $consulta->bindValue(':id_mesa', $id_mesa, PDO::PARAM_STR);

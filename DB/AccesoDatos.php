@@ -41,7 +41,7 @@ class AccesoDatos
 
     public function IniciarTransaccion()
     {
-        $this->_objetoPDO->beginTransaction();
+        // $this->_objetoPDO->beginTransaction();
     }
 
     public function Commit()
