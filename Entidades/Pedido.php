@@ -61,8 +61,7 @@ class Pedido
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $respuesta;
         }
     }
@@ -83,8 +82,7 @@ class Pedido
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $respuesta;
         }
     }
@@ -111,8 +109,7 @@ class Pedido
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $resultado = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $resultado;
         }
     }
@@ -133,7 +130,7 @@ class Pedido
                                                         INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector 
                                                         INNER JOIN empleado em ON em.ID_empleado = p.id_mozo
                                                         WHERE p.codigo = :codigo");
-            
+
             $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
             $consulta->execute();
 
@@ -141,8 +138,7 @@ class Pedido
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $resultado = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $resultado;
         }
     }
@@ -170,8 +166,7 @@ class Pedido
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $resultado = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $resultado;
         }
     }
@@ -199,8 +194,7 @@ class Pedido
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $resultado = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $resultado;
         }
     }
@@ -212,7 +206,7 @@ class Pedido
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
             switch ($sector) {
-            //Si es socio los lista a todos.
+                    //Si es socio los lista a todos.
                 case "Socio":
                     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
                                                                 me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
@@ -225,7 +219,7 @@ class Pedido
                                                                 INNER JOIN empleado em ON em.ID_empleado = p.id_mozo
                                                                 WHERE ep.descripcion NOT IN ('Cancelado','Finalizado')");
                     break;
-            //Si es mozo lista los de ese mozo.
+                    //Si es mozo lista los de ese mozo.
                 case "Mozo":
                     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
                                                             me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
@@ -239,7 +233,7 @@ class Pedido
                                                             WHERE p.id_mozo = :id_mozo AND ep.descripcion NOT IN ('Cancelado','Finalizado')");
                     $consulta->bindValue(':id_mozo', $id_empleado, PDO::PARAM_STR);
                     break;
-            //Para los demás lista por sector.
+                    //Para los demás lista por sector.
                 default:
                     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
                                                             me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
@@ -261,8 +255,7 @@ class Pedido
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $resultado = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $resultado;
         }
     }
@@ -289,8 +282,7 @@ class Pedido
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $resultado = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $resultado;
         }
     }
@@ -301,7 +293,7 @@ class Pedido
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $time = new DateTime('now',new DateTimeZone('America/Argentina/Buenos_Aires'));
+            $time = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
             $time->add(new DateInterval('PT' . $minutosEstimadosDePreparacion . 'M'));
 
             $hora_entrega_estimada = $time->format('H:i');
@@ -319,35 +311,45 @@ class Pedido
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $respuesta;
         }
     }
 
     ///Se informa que el pedido está listo para servir.
-    public static function InformarListoParaServir($codigo)
+    public static function InformarCambioEstado($codigo, $estado)
     {
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $time = new DateTime('now',new DateTimeZone('America/Argentina/Buenos_Aires'));
+            $time = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
             $hora_entrega_real = $time->format('H:i');
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido SET id_estado_pedidos = 3, hora_entrega_real = :hora_entrega_real 
-                                                            WHERE codigo = :codigo");
+            if ($estado == "Listo para Servir") {
+                $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido 
+                                                                 SET id_estado_pedidos = 3, hora_entrega_real = :hora_entrega_real 
+                                                                 WHERE codigo = :codigo");
 
-            $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
-            $consulta->bindValue(':hora_entrega_real', $hora_entrega_real, PDO::PARAM_STR);
+                $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
+                $consulta->bindValue(':hora_entrega_real', $hora_entrega_real, PDO::PARAM_STR);
+            } else {
+                $consulta_id_estado = $objetoAccesoDato->RetornarConsulta("SELECT id FROM estado_pedidos WHERE descripcion = :estado");
 
+                $consulta_id_estado->bindValue(':estado', $estado, PDO::PARAM_STR);
+                $consulta_id_estado->execute();
+                $resultado = $consulta_id_estado->fetch()[0];
+                $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido SET id_estado_pedidos = :estado WHERE codigo = :codigo");
+
+                $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
+                $consulta->bindValue(':estado', $resultado, PDO::PARAM_STR);
+            }
             $consulta->execute();
 
-            $respuesta = array("Estado" => "OK", "Mensaje" => "Pedido listo para servir.");
+            $respuesta = array("Estado" => "OK", "Mensaje" => "Pedido actualizado.");
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $respuesta;
         }
     }
@@ -369,8 +371,7 @@ class Pedido
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $respuesta;
         }
     }
@@ -389,24 +390,22 @@ class Pedido
             $consulta->execute();
             $pedido = $consulta->fetch();
 
-            if($pedido["estado"] == 'En Preparacion'){
-                $time = new DateTime('now',new DateTimeZone('America/Argentina/Buenos_Aires'));
-                $hora_entrega = new DateTime($hora_entrega_estimada[0],new DateTimeZone('America/Argentina/Buenos_Aires'));
-                if($time > $hora_entrega){
+            if ($pedido["estado"] == 'En Preparacion') {
+                $time = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
+                $hora_entrega = new DateTime($hora_entrega_estimada[0], new DateTimeZone('America/Argentina/Buenos_Aires'));
+                if ($time > $hora_entrega) {
                     $resultado = "Pedido retrasado.";
-                }else{
+                } else {
                     $intervalo = $time->diff($hora_entrega);
                     $resultado = $intervalo->format('%H:%I:%S');
-                }                
-            }
-            else{
-                $resultado = array("Estado" => "ERROR", "Mensaje" => "El pedido se encuentra ".$pedido["estado"]);
+                }
+            } else {
+                $resultado = array("Estado" => "ERROR", "Mensaje" => "El pedido se encuentra " . $pedido["estado"]);
             }
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $resultado = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $resultado;
         }
     }
@@ -428,8 +427,7 @@ class Pedido
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $respuesta;
         }
     }
@@ -451,8 +449,7 @@ class Pedido
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $respuesta;
         }
     }
@@ -474,8 +471,7 @@ class Pedido
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $respuesta;
         }
     }
@@ -503,10 +499,8 @@ class Pedido
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $respuesta;
         }
     }
 }
-?>

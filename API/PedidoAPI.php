@@ -83,10 +83,11 @@ class PedidoApi extends Pedido{
     }
 
     ///Se informa que el pedido está listo para servir.
-    public function InformarPedidoListoParaServir($request,$response,$args){
+    public function InformarPedidoCambioEstado($request,$response,$args){
         $parametros = $request->getParsedBody();
         $codigo = $parametros["codigo"];
-        $respuesta = Pedido::InformarListoParaServir($codigo);
+        $estado = $parametros["estado"];
+        $respuesta = Pedido::InformarCambioEstado($codigo, $estado);
         $newResponse = $response->withJson($respuesta,200);
         return $newResponse;
     }

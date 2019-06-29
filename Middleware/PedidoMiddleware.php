@@ -34,12 +34,6 @@ class PedidoMiddleware
         if ($pedido == null) {
             $retorno = array("Estado" => "ERROR", "Mensaje" => "Codigo incorrecto.");
             $newResponse = $response->withJson($retorno, 200);
-        } else if ($pedido[0]->estado != 'En Preparacion') {
-            $retorno = array("Estado" => "ERROR", "Mensaje" => "Este pedido no se encuentra en preparacion.");
-            $newResponse = $response->withJson($retorno, 200);
-        } else if ($pedido[0]->id_encargado != $payload->id) {
-            $retorno = array("Estado" => "ERROR", "Mensaje" => "Solo el encargado del pedido puede realizar esta accion.");
-            $newResponse = $response->withJson($retorno, 200);
         } else {
             $newResponse = $next($request, $response);
         }

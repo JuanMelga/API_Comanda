@@ -158,7 +158,7 @@ $app->post('/pedido/tomarPedido[/]', \PedidoAPI::class . ':TomarPedidoPendiente'
 ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
 ->add(\PedidoMiddleware::class . ':ValidarTomarPedido')
 ->add(\EmpleadoMiddleware::class . ':ValidarToken');  
-$app->post('/pedido/listoParaServir[/]', \PedidoAPI::class . ':InformarPedidoListoParaServir')
+$app->post('/pedido/cambiarEstado[/]', \PedidoAPI::class . ':InformarPedidoCambioEstado')
 ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
 ->add(\PedidoMiddleware::class . ':ValidarInformarListoParaServir')
 ->add(\EmpleadoMiddleware::class . ':ValidarToken');  
