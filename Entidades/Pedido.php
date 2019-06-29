@@ -19,6 +19,8 @@ class Pedido
     public $importe;
     public $es_delivery;
     public $direccion_delivery;
+    public $fire_mail_delivery; 
+    public $fire_mail_cliente;
 
     ///Registra un nuevo pedido
     public static function Registrar($id_mesa, $id_menu, $id_mozo, $nombre_cliente, $es_delivery, $direccion_delivery)
@@ -518,7 +520,8 @@ class Pedido
             $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
                                                         me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
                                                         p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
-                                                        p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery, p.direccion_delivery
+                                                        p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery, p.direccion_delivery,
+                                                        p.fire_mail_delivery, p.fire_mail_cliente
                                                         FROM pedido p
                                                         INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                         INNER JOIN menu me ON me.id = p.id_menu
@@ -527,6 +530,55 @@ class Pedido
 
             $consulta->bindValue(':nombre_cliente', $nombre_cliente, PDO::PARAM_STR);
             $consulta->bindValue(':es_delivery', $es_delivery, PDO::PARAM_INT);
+            $consulta->execute();
+
+            $resultado = $consulta->fetchAll(PDO::FETCH_CLASS, "Pedido");
+        } catch (Exception $e) {
+            $mensaje = $e->getMessage();
+            $resultado = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
+        } finally {
+            return $resultado;
+        }
+    }
+
+    ///Pedido por cliente.
+    public static function ObtenerPedidosDelivery($fire_mail_delivery)
+    {
+        try {
+            $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa, 
+                                                        me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
+                                                        p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
+                                                        p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery, p.direccion_delivery,
+                                                        p.fire_mail_delivery, p.fire_mail_cliente
+                                                        FROM pedido p
+                                                        INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
+                                                        INNER JOIN menu me ON me.id = p.id_menu
+                                                        INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector 
+                                                        WHERE p.fire_mail_delivery = :fire_mail_delivery");
+
+            $consulta->bindValue(':fire_mail_delivery', $fire_mail_delivery, PDO::PARAM_STR);
+            $consulta->execute();
+
+            $resultado = $consulta->fetchAll(PDO::FETCH_CLASS, "Pedido");
+        } catch (Exception $e) {
+            $mensaje = $e->getMessage();
+            $resultado = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
+        } finally {
+            return $resultado;
+        }
+    }
+
+    public static function ActualizarDelivery($fire_mail_delivery, $codigo)
+    {
+        try {
+            $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+
+            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedidos SET fire_mail_delivery = :fire_mail_delivery WHERE p.codigo = :codigo");
+
+            $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
+            $consulta->bindValue(':fire_mail_delivery', $fire_mail_delivery, PDO::PARAM_STR);
             $consulta->execute();
 
             $resultado = $consulta->fetchAll(PDO::FETCH_CLASS, "Pedido");

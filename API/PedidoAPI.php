@@ -149,4 +149,22 @@ class PedidoApi extends Pedido{
         $newResponse = $response->withJson($respuesta,200);
         return $newResponse;
     }
+
+    //Lista los pedidos de un cliente
+    public function GetPedidosDelivery($request,$response,$args) {
+        $parametros = $request->getParsedBody();
+        $fire_mail_delivery = $parametros["fire_mail_delivery"];
+        $respuesta = Pedido::ObtenerPedidosDelivery($fire_mail_delivery);
+        $newResponse = $response->withJson($respuesta,200);
+        return $newResponse;
+    }
+
+    public function UpdateDelivery($request,$response,$args) {
+        $parametros = $request->getParsedBody();
+        $fire_mail_delivery = $parametros["fire_mail_delivery"];
+        $codigo = $parametros["codigo"];
+        $respuesta = Pedido::ActualizarDelivery($fire_mail_delivery, $codigo);
+        $newResponse = $response->withJson($respuesta,200);
+        return $newResponse;
+    }
 }

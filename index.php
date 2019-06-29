@@ -151,6 +151,8 @@ $app->post('/pedido/listarTodosPorFecha[/]', \PedidoAPI::class . ':ListarTodosLo
 ->add(\EmpleadoMiddleware::class . ':ValidarToken');  
 $app->get('/pedido/listarPorMesa/{codigoMesa}[/]', \PedidoAPI::class . ':ListarTodosLosPedidosPorMesa');
 $app->post('/pedido/listarPorCliente[/]', \PedidoAPI::class . ':GetPedidosCliente');
+$app->post('/pedido/listarPorDelivery[/]', \PedidoAPI::class . ':GetPedidosDelivery');
+$app->post('/pedido/updateDelivery[/]', \PedidoAPI::class . ':UpdateDelivery');
 $app->get('/pedido/listarActivos[/]', \PedidoAPI::class . ':ListarPedidosActivos')
 ->add(\EmpleadoMiddleware::class . ':ValidarToken');  
 $app->post('/pedido/tomarPedido[/]', \PedidoAPI::class . ':TomarPedidoPendiente')
