@@ -17,6 +17,7 @@ class PedidoApi extends Pedido{
             $direccion_delivery = $parametros["direccion_delivery"];
             $id_mozo = $parametros["id_mozo"];
             var_dump("Llegué a 1");
+
             $respuesta = Pedido::Registrar($id_mesa,$id_menu,$id_mozo,$nombre_cliente, $es_delivery, $direccion_delivery);
         }
         catch(Exception $ex){
