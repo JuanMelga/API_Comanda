@@ -15,12 +15,7 @@ class PedidoApi extends Pedido{
             $nombre_cliente = $parametros["cliente"];
             $es_delivery = $parametros["es_delivery"];
             $direccion_delivery = $parametros["direccion_delivery"];
-            
-            if ($parametros["id_mozo"]) {
-                $id_mozo = $parametros["id_mozo"];
-            } else {
-                $id_mozo = NULL;
-            }
+            $id_mozo = $parametros["id_mozo"];
 
             $respuesta = Pedido::Registrar($id_mesa,$id_menu,$id_mozo,$nombre_cliente, $es_delivery, $direccion_delivery);
         }
