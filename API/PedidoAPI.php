@@ -7,11 +7,15 @@ class PedidoApi extends Pedido{
         $respuesta = "";      
         try {
             $parametros = $request->getParsedBody();
+
+            var_dump($parametros);
+
             $id_mesa = $parametros["id_mesa"];
             $id_menu  = $parametros["id_menu"];
             $nombre_cliente = $parametros["cliente"];
             $es_delivery = $parametros["es_delivery"];
             $direccion_delivery = $parametros["direccion_delivery"];
+            
             if ($parametros["id_mozo"]) {
                 $id_mozo = $parametros["id_mozo"];
             } else {
