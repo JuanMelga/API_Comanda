@@ -3,22 +3,31 @@ include_once("Entidades/Token.php");
 include_once("Entidades/Pedido.php");
 class PedidoApi extends Pedido{
     ///Registro de nuevos pedidos.
-    public function RegistrarPedido($request, $response, $args){
-        $parametros = $request->getParsedBody();
-        $id_mesa = $parametros["id_mesa"];
-        $id_menu  = $parametros["id_menu"];
-        $nombre_cliente = $parametros["cliente"];
-        $es_delivery = $parametros["es_delivery"];
-        $direccion_delivery = $parametros["direccion_delivery"];
-        if ($parametros["id_mozo"]) {
-            $id_mozo = $parametros["id_mozo"];
-        } else {
-            $id_mozo = NULL;
-        }
+    public function RegistrarPedido($request, $response, $args){ 
+        $respuesta = "";      
+        try {
+            $parametros = $request->getParsedBody();
+            $id_mesa = $parametros["id_mesa"];
+            $id_menu  = $parametros["id_menu"];
+            $nombre_cliente = $parametros["cliente"];
+            $es_delivery = $parametros["es_delivery"];
+            $direccion_delivery = $parametros["direccion_delivery"];
+            if ($parametros["id_mozo"]) {
+                $id_mozo = $parametros["id_mozo"];
+            } else {
+                $id_mozo = NULL;
+            }
 
-        $respuesta = Pedido::Registrar($id_mesa,$id_menu,$id_mozo,$nombre_cliente, $es_delivery, $direccion_delivery);
-        $newResponse = $response->withJson($respuesta,200);
-        return $newResponse;
+            $respuesta = Pedido::Registrar($id_mesa,$id_menu,$id_mozo,$nombre_cliente, $es_delivery, $direccion_delivery);
+            $respuesta = $response->withJson($respuesta,200);
+        }
+        catch(Exception $ex){
+            $respuesta = $response->withJson($ex->getMessage(),200);
+        }
+        finally {
+            $newResponse = $response->withJson($respuesta,200);
+            return $newResponse;
+        }
     }
 
     ///Lista todos los pedidos
