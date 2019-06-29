@@ -10,7 +10,7 @@ class PedidoApi extends Pedido{
         $nombre_cliente = $parametros["cliente"];
         $es_delivery = $parametros["es_delivery"];
         $direccion_delivery = $parametros["direccion_delivery"];
-        if ($parametros["id_mozo"]) {
+        if ($parametros["id_mozo"] == 0) {
             $id_mozo = $parametros["id_mozo"];
         } else {
             $id_mozo = NULL;
