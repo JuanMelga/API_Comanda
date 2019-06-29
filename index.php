@@ -143,7 +143,6 @@ $app->delete('/pedido/{codigo}[/]', \PedidoAPI::class . ':CancelarPedido')
 ->add(\EmpleadoMiddleware::class . ':ValidarMozo')
 ->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
 $app->get('/pedido/listarTodos[/]', \PedidoAPI::class . ':ListarTodosLosPedidos')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
 ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/pedido/listarCancelados[/]', \PedidoAPI::class . ':ListarTodosLosPedidosCancelados')
 ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
