@@ -574,7 +574,7 @@ class Pedido
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedidos SET fire_mail_delivery = :fire_mail_delivery WHERE p.codigo = :codigo");
+            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido SET fire_mail_delivery = :fire_mail_delivery WHERE p.codigo = :codigo");
 
             $consulta->bindValue(':codigo', $codigo, PDO::PARAM_STR);
             $consulta->bindValue(':fire_mail_delivery', $fire_mail_delivery, PDO::PARAM_STR);
