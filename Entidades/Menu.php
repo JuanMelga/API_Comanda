@@ -97,8 +97,8 @@ class Menu
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id, m.nombre, m.precio, m.id_sector, te.Descripcion as sector, m.descripcion, m.tiempo_promedio FROM menu m INNER JOIN
-                                                        tipoempleado te ON te.ID_tipo_empleado = m.id_sector;");
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id, m.nombre, m.precio, m.id_sector, te.Descripcion as sector, m.descripcion, m.tiempo_promedio, m.foto
+                                                            FROM menu m INNER JOIN tipoempleado te ON te.ID_tipo_empleado = m.id_sector;");
 
             $consulta->execute();
 
