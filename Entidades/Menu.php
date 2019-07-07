@@ -22,8 +22,7 @@ class Menu
             $consulta->execute();
             $ult_id = $consulta->fetch();
             $id = 0;
-            if($ult_id != null)
-            {
+            if ($ult_id != null) {
                 $id = $ult_id[0] + 1;
             }
             $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO menu (id, nombre, precio, id_sector, descripcion, tiempo_promedio)
@@ -49,8 +48,7 @@ class Menu
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
             //$objetoAccesoDato->Rollback();
-        }
-        finally {
+        } finally {
             return $respuesta;
         }
     }
@@ -85,8 +83,7 @@ class Menu
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $respuesta;
         }
     }
@@ -97,8 +94,13 @@ class Menu
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id, m.nombre, m.precio, m.id_sector, te.Descripcion as sector, m.descripcion, m.tiempo_promedio, m.foto
-                                                            FROM menu m INNER JOIN tipoempleado te ON te.ID_tipo_empleado = m.id_sector;");
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id, m.nombre, m.precio, m.id_sector, te.Descripcion as sector, 
+                                                            m.descripcion, m.tiempo_promedio, min(fm.idFoto), fm.base64 as foto
+                                                            FROM menu m 
+                                                            INNER JOIN tipoempleado te ON te.ID_tipo_empleado = m.id_sector
+                                                            LEFT JOIN fotos_menu fm ON fm.idMenu = m.id
+                                                            GROUP BY id, m.nombre, m.precio, m.id_sector, te.Descripcion, m.descripcion, 
+                                                            m.tiempo_promedio;");
 
             $consulta->execute();
 
@@ -106,8 +108,7 @@ class Menu
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $resultado = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $resultado;
         }
     }
@@ -134,10 +135,8 @@ class Menu
         } catch (Exception $e) {
             $mensaje = $e->getMessage();
             $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
-        }
-        finally {
+        } finally {
             return $respuesta;
         }
     }
 }
-?>
