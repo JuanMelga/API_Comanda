@@ -62,6 +62,27 @@ class Pedido
         }
     }
 
+    ///Autorizar todos los pedidos.
+    public static function AutorizarTodos($id_mozo)
+    {
+        try {
+            $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+
+            $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido SET id_mozo = :id_mozo WHERE id_mozo is NULL");
+
+            $consulta->bindValue(':id_mozo', $id_mozo, PDO::PARAM_STR);
+
+            $consulta->execute();
+
+            $respuesta = array("Estado" => "OK", "Mensaje" => "Pedidos autorizados correctamente.");
+        } catch (Exception $e) {
+            $mensaje = $e->getMessage();
+            $respuesta = array("Estado" => "ERROR", "Mensaje" => "$mensaje");
+        } finally {
+            return $respuesta;
+        }
+    }
+
     ///Cancelar pedido.
     public static function Cancelar($codigo)
     {
