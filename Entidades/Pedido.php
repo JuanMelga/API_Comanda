@@ -411,7 +411,7 @@ class Pedido
         try {
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
-            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.hora_entrega_estimada, ep.descripcion as estado FROM pedido p
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.hora_entrega_estimada as estimacion, ep.descripcion as estado FROM pedido p
                                                             INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                             WHERE p.codigo = :codigo");
 
@@ -421,7 +421,7 @@ class Pedido
 
             if ($pedido["estado"] == 'En Preparacion') {
                 $time = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
-                $hora_entrega = new DateTime($hora_entrega_estimada[0], new DateTimeZone('America/Argentina/Buenos_Aires'));
+                $hora_entrega = new DateTime($pedido['estimacion'], new DateTimeZone('America/Argentina/Buenos_Aires'));
                 if ($time > $hora_entrega) {
                     $resultado = "Pedido retrasado.";
                 } else {
