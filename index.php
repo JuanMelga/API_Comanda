@@ -141,7 +141,6 @@ $app->delete('/menu/{id}[/]', \MenuAPI::class . ':BajaMenu')
 $app->post('/pedido/registrar[/]', \PedidoAPI::class . ':RegistrarPedido')
     ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->delete('/pedido/{codigo}[/]', \PedidoAPI::class . ':CancelarPedido')
-    ->add(\EmpleadoMiddleware::class . ':ValidarMozo')
     ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/pedido/listarTodos[/]', \PedidoAPI::class . ':ListarTodosLosPedidos')
     ->add(\EmpleadoMiddleware::class . ':ValidarToken');
