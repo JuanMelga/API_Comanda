@@ -71,7 +71,7 @@ class Pedido
             $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedido p 
                                                             INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                             SET p.id_mozo = :id_mozo
-                                                            WHERE id_mozo is NULL AND ep.descripcion = 'Pendiente'");
+                                                            WHERE id_mozo = 0 AND ep.descripcion = 'Pendiente'");
 
             $consulta->bindValue(':id_mozo', $id_mozo, PDO::PARAM_STR);
 
