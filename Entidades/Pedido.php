@@ -199,14 +199,13 @@ class Pedido
 
             $consulta = $objetoAccesoDato->RetornarConsulta("SELECT p.codigo, ep.descripcion as estado, p.id_mesa as mesa,
                                                         me.nombre as descripcion, p.id_menu, te.descripcion as sector, p.nombre_cliente,
-                                                        em.nombre_empleado as nombre_mozo, p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
+                                                        p.id_mozo, p.id_encargado, p.hora_inicial, p.hora_entrega_estimada,
                                                         p.hora_entrega_real, p.fecha, me.precio as importe, p.es_delivery,
                                                         p.fire_mail_delivery, p.fire_mail_cliente, p.direccion_delivery
                                                         FROM pedido p
                                                         INNER JOIN estado_pedidos ep ON ep.id_estado_pedidos = p.id_estado_pedidos
                                                         INNER JOIN menu me ON me.id = p.id_menu
                                                         INNER JOIN tipoempleado te ON te.id_tipo_empleado = me.id_sector
-                                                        INNER JOIN empleado em ON em.ID_empleado = p.id_mozo
                                                         WHERE p.id_mesa = :mesa AND ep.descripcion NOT IN ('Cancelado','Finalizado')");
             $consulta->bindValue(':mesa', $mesa, PDO::PARAM_STR);
             $consulta->execute();
