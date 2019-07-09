@@ -1,4 +1,5 @@
 <?php
+
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
@@ -28,184 +29,184 @@ $app->options('/{routes:.+}', function ($request, $response, $args) {
 $app->add(function ($req, $res, $next) {
     $response = $next($req, $res);
     return $response
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+        ->withHeader('Access-Control-Allow-Origin', '*')
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 });
 
 //Empleados
-$app->post('/empleados/login[/]', \EmpleadoAPI::class . ':LoginEmpleado');  
+$app->post('/empleados/login[/]', \EmpleadoAPI::class . ':LoginEmpleado');
 $app->post('/empleados/registrarEmpleado[/]', \EmpleadoAPI::class . ':RegistrarEmpleado')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');   
+    ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/empleados/listar[/]', \EmpleadoAPI::class . ':ListarEmpleados')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');   
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/empleados/activar/{id}[/]', \EmpleadoAPI::class . ':ActivarEmpleado')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');  
+    ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->delete('/empleados/{id}[/]', \EmpleadoAPI::class . ':BajaEmpleado')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');  
+    ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->delete('/empleados/suspender/{id}[/]', \EmpleadoAPI::class . ':SuspenderEmpleado')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->post('/empleados/modificar[/]', \EmpleadoAPI::class . ':ModificarEmpleado')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');  
+    ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->post('/empleados/cambiarClave[/]', \EmpleadoAPI::class . ':CambiarClaveEmpleado')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');
+    ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/empleados/cantidadOperacionesPorSector[/]', \EmpleadoAPI::class . ':ObtenerCantidadOperacionesPorSector')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->post('/empleados/cantidadOperacionesEmpleadosPorSector[/]', \EmpleadoAPI::class . ':ObtenerCantidadOperacionesEmpleadosPorSector')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->post('/empleados/listarEntreFechasLogin[/]', \EmpleadoAPI::class . ':ListarEmpleadosEntreFechasLogin')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->post('/empleados/listarEntreFechasRegistro[/]', \EmpleadoAPI::class . ':ListarEmpleadosEntreFechasRegistro')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 
 //Mesas
 $app->post('/mesas/registrar[/]', \MesaAPI::class . ':RegistrarMesa')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');   
+    ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/mesas/listar[/]', \MesaAPI::class . ':ListarMesas')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');   
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->delete('/mesas/{codigo}[/]', \MesaAPI::class . ':BajaMesa')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->post('/mesas/foto[/]', \MesaAPI::class . ':ActualizarFotoMesa')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\EmpleadoMiddleware::class . ':ValidarMozo')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
+    ->add(\EmpleadoMiddleware::class . ':ValidarMozo')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->post('/mesas/cambiarEstado[/]', \MesaAPI::class . ':ModificarEstado')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');
+    ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/mesas/cobrar/{codigo}[/]', \MesaAPI::class . ':CobrarMesa')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/mesas/MasUsada[/]', \MesaAPI::class . ':MesaMasUsada')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');  
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/mesas/MenosUsada[/]', \MesaAPI::class . ':MesaMenosUsada')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/mesas/MasFacturacion[/]', \MesaAPI::class . ':MesaMasFacturacion')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/mesas/MenosFacturacion[/]', \MesaAPI::class . ':MesaMenosFacturacion')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/mesas/ConFacturaConMasImporte[/]', \MesaAPI::class . ':MesaConFacturaConMasImporte')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/mesas/ConFacturaConMenosImporte[/]', \MesaAPI::class . ':MesaConFacturaConMenosImporte')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/mesas/ConMejorPuntuacion[/]', \MesaAPI::class . ':MesaConMejorPuntuacion')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/mesas/ConPeorPuntuacion[/]', \MesaAPI::class . ':MesaConPeorPuntuacion')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->post('/mesas/FacturacionEntreFechas[/]', \MesaAPI::class . ':MesaFacturacionEntreFechas')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 
 //Menu
 $app->post('/menu/registrar[/]', \MenuAPI::class . ':RegistrarComida');
 $app->post('/menu/modificar[/]', \MenuAPI::class . ':ModificarComida')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/menu/listar[/]', \MenuAPI::class . ':ListarMenu');
 $app->delete('/menu/{id}[/]', \MenuAPI::class . ':BajaMenu')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 
 //Pedido
 $app->post('/pedido/registrar[/]', \PedidoAPI::class . ':RegistrarPedido')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');
-$app->post('/pedido/autorizarTodos[/]', \PedidoAPI::class . ':AutorizarTodos')
-->add(\EmpleadoMiddleware::class . ':ValidarMozo')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->delete('/pedido/{codigo}[/]', \PedidoAPI::class . ':CancelarPedido')
-->add(\EmpleadoMiddleware::class . ':ValidarMozo')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\EmpleadoMiddleware::class . ':ValidarMozo')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/pedido/listarTodos[/]', \PedidoAPI::class . ':ListarTodosLosPedidos')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/pedido/listarCancelados[/]', \PedidoAPI::class . ':ListarTodosLosPedidosCancelados')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');  
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->post('/pedido/listarTodosPorFecha[/]', \PedidoAPI::class . ':ListarTodosLosPedidosPorFecha')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');  
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/pedido/listarPorMesa/{codigoMesa}[/]', \PedidoAPI::class . ':ListarTodosLosPedidosPorMesa');
 $app->post('/pedido/listarPorCliente[/]', \PedidoAPI::class . ':GetPedidosCliente');
 $app->post('/pedido/listarPorDelivery[/]', \PedidoAPI::class . ':GetPedidosDelivery');
 $app->post('/pedido/updateDelivery[/]', \PedidoAPI::class . ':UpdateDelivery');
+$app->post('/pedido/autorizarTodos[/]', \PedidoAPI::class . ':AutorizarPedidos')
+    ->add(\EmpleadoMiddleware::class . ':ValidarMozo')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/pedido/listarActivos[/]', \PedidoAPI::class . ':ListarPedidosActivos')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');  
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->post('/pedido/tomarPedido[/]', \PedidoAPI::class . ':TomarPedidoPendiente')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\PedidoMiddleware::class . ':ValidarTomarPedido')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');  
+    ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
+    ->add(\PedidoMiddleware::class . ':ValidarTomarPedido')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->post('/pedido/cambiarEstado[/]', \PedidoAPI::class . ':InformarPedidoCambioEstado')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\PedidoMiddleware::class . ':ValidarInformarCambioEstado')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');  
+    ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
+    ->add(\PedidoMiddleware::class . ':ValidarInformarCambioEstado')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->post('/pedido/servir[/]', \PedidoAPI::class . ':ServirPedido')
-->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
-->add(\PedidoMiddleware::class . ':ValidarServir')
-->add(\EmpleadoMiddleware::class . ':ValidarMozo')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\OperacionMiddleware::class . ':SumarOperacionAEmpleado')
+    ->add(\PedidoMiddleware::class . ':ValidarServir')
+    ->add(\EmpleadoMiddleware::class . ':ValidarMozo')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/pedido/tiempoRestante/{codigoPedido}[/]', \PedidoAPI::class . ':TiempoRestantePedido');
 $app->get('/pedido/listarFueraDelTiempoEstipulado[/]', \PedidoAPI::class . ':ListarPedidosFueraDelTiempoEstipulado')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');  
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/pedido/MasVendido[/]', \PedidoAPI::class . ':LoMasVendido')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');  
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/pedido/MenosVendido[/]', \PedidoAPI::class . ':LoMenosVendido')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');  
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 
 //Encuesta
 $app->post('/encuesta/registrar[/]', \EncuestaAPI::class . ':RegistrarEncuesta')
-->add(\EncuestaMiddleware::class . ':ValidarEncuesta'); 
+    ->add(\EncuestaMiddleware::class . ':ValidarEncuesta');
 $app->get('/encuesta/listar[/]', \EncuestaAPI::class . ':ListarEncuestas')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->post('/encuesta/listarEntreFechas[/]', \EncuestaAPI::class . ':ListarEncuestasEntreFechas')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken'); 
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 
 //Factura
 $app->get('/facturas/listarVentasPDF[/]', \FacturaAPI::class . ':ListarVentasPDF')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');  
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->get('/facturas/listarVentasExcel[/]', \FacturaAPI::class . ':ListarVentasExcel')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');  
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 $app->post('/facturas/listarEntreFechas[/]', \FacturaAPI::class . ':ListarFacturasEntreFechas')
-->add(\EmpleadoMiddleware::class . ':ValidarSocio')
-->add(\EmpleadoMiddleware::class . ':ValidarToken');  
+    ->add(\EmpleadoMiddleware::class . ':ValidarSocio')
+    ->add(\EmpleadoMiddleware::class . ':ValidarToken');
 
 //Captcha
-$app->get('/captcha[/]', \CaptchaAPI::class . ':GetCaptcha'); 
-$app->post('/captcha[/]', \CaptchaAPI::class . ':PostCaptcha'); 
+$app->get('/captcha[/]', \CaptchaAPI::class . ':GetCaptcha');
+$app->post('/captcha[/]', \CaptchaAPI::class . ':PostCaptcha');
 
 $app->run();

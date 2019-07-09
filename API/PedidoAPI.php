@@ -76,7 +76,7 @@ class PedidoApi extends Pedido
     }
 
     ///Autorizar todos los pedidos.
-    public function AutorizarTodos($request, $response, $args)
+    public function AutorizarPedidos($request, $response, $args)
     {
         $payload = $request->getAttribute("payload")["Payload"];
         $id_mozo = $payload->id;
